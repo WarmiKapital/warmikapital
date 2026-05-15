@@ -37,12 +37,17 @@ import {
 import { useState, useEffect } from "react";
 
 // Helper for WhatsApp
-const getWhatsAppUrl = (data?: { name?: string, message?: string }) => {
+const getWhatsAppUrl = (data?: { name?: string, email?: string, message?: string }) => {
     const phoneNumber = "51932340282";
     let message = "Hola, me gustaría agendar una consulta en Warmi Kapital.";
-    if (data?.name && data?.message) {
-        message += `\n\nNombre: ${data.name}\nMensaje: ${data.message}`;
+    
+    if (data?.name || data?.email || data?.message) {
+        message += "\n";
+        if (data.name) message += `\nNombre: ${data.name}`;
+        if (data.email) message += `\nEmail: ${data.email}`;
+        if (data.message) message += `\nMensaje: ${data.message}`;
     }
+    
     return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 };
 
@@ -636,7 +641,7 @@ const Contact = () => {
 
   const handleWhatsappFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    window.open(getWhatsAppUrl({ name: formData.name, message: formData.message }), "_blank");
+    window.open(getWhatsAppUrl({ name: formData.name, email: formData.email, message: formData.message }), "_blank");
   };
 
   return (
