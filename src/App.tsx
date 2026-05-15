@@ -163,7 +163,7 @@ const Hero = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <span className="text-secondary font-sans font-semibold text-sm uppercase tracking-[0.2em] mb-6 block">
-              Firma de Ingeniería Legal y Financiera
+              Boutique Legal y Financiera
             </span>
             <h1 className="text-5xl md:text-7xl font-display font-medium text-white leading-[1.1] mb-8">
               El escudo corporativo para empresas que <span className="text-secondary italic">escalan sin vértigo.</span>
@@ -172,7 +172,7 @@ const Hero = () => {
               Tu negocio ya genera valor; nuestro trabajo es blindarlo. Estructuración legal, tributaria y financiera para directivos estratégicos enfocados en resultados.
             </p>
             <p className="text-sm text-secondary/90 mb-12 max-w-3xl font-sans uppercase tracking-[0.1em] font-semibold flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-secondary inline-block"></span> Estudio Jurídico Boutique de Ingeniería Legal y Financiera.
+              <span className="w-1.5 h-1.5 rounded-full bg-secondary inline-block"></span> Estudio Jurídico Especializado en Derecho y Finanzas Corporativas.
             </p>
             <div className="flex flex-col sm:flex-row gap-5">
               <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="bg-secondary text-primary px-8 py-4 rounded-sm font-sans font-semibold flex items-center justify-center gap-2 hover:bg-white hover:text-primary transition-all duration-300">
