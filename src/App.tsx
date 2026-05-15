@@ -27,9 +27,26 @@ import {
   Menu,
   X,
   Linkedin,
-  Instagram
+  Instagram,
+  MessageSquare
 } from "lucide-react";
 import { useState, useEffect } from "react";
+
+// Helper for WhatsApp
+const getWhatsAppUrl = (data?: { name?: string, message?: string }) => {
+    const phoneNumber = "51932340282";
+    let message = "Hola, me gustaría agendar una consulta en Warmi Kapital.";
+    if (data?.name && data?.message) {
+        message += `\n\nNombre: ${data.name}\nMensaje: ${data.message}`;
+    }
+    return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+};
+
+const WhatsAppFloatingButton = () => (
+  <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 z-50 transition-transform hover:scale-110 shadow-green-500/20">
+     <MessageSquare size={24} />
+  </a>
+);
 
 // --- Components ---
 
@@ -54,14 +71,14 @@ const Navbar = () => {
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? "bg-white/90 backdrop-blur-md shadow-sm py-4" : "bg-transparent py-6"}`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-primary flex items-center justify-center rounded-sm">
-            <span className="text-secondary font-display font-bold text-xl">WK</span>
-          </div>
-          <span className={`font-display font-bold text-xl tracking-tighter ${isScrolled ? "text-primary" : "text-primary md:text-white"}`}>
-            WARMI <span className="text-secondary">KAPITAL</span>
-          </span>
-        </div>
+        <a href="#inicio" className="flex items-center gap-2">
+          <img 
+            src="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816751/Recurso_9_hkq6bi.png" 
+            alt="Warmi Kapital Logo" 
+            className={`h-12 md:h-16 w-auto transition-all ${isScrolled ? "brightness-100" : "md:brightness-0 md:invert"}`}
+            referrerPolicy="no-referrer"
+          />
+        </a>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
@@ -74,9 +91,9 @@ const Navbar = () => {
               {link.name}
             </a>
           ))}
-          <button className="bg-secondary text-white px-6 py-2 rounded-sm text-sm font-semibold hover:bg-secondary/90 transition-all shadow-lg shadow-secondary/20">
+          <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="bg-secondary text-white px-6 py-2 rounded-sm text-sm font-semibold hover:bg-secondary/90 transition-all shadow-lg shadow-secondary/20">
             Agenda una consulta
-          </button>
+          </a>
         </div>
 
         {/* Mobile Toggle */}
@@ -107,9 +124,9 @@ const Navbar = () => {
                 {link.name}
               </a>
             ))}
-            <button className="bg-primary text-white py-4 rounded-sm font-semibold">
+              <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="bg-secondary text-white py-4 rounded-sm font-semibold text-center">
               Agenda una consulta
-            </button>
+            </a>
           </motion.div>
         )}
       </AnimatePresence>
@@ -146,9 +163,9 @@ const Hero = () => {
               Acompañamos a personas y empresas con soluciones estratégicas en derecho, finanzas y gestión corporativa para impulsar decisiones inteligentes, seguras y sostenibles.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="bg-secondary text-white px-8 py-4 rounded-sm font-bold flex items-center justify-center gap-2 hover:bg-secondary/90 transition-all group">
+              <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="bg-secondary text-white px-8 py-4 rounded-sm font-bold flex items-center justify-center gap-2 hover:bg-secondary/90 transition-all group">
                 Agenda una consulta <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
-              </button>
+              </a>
               <button className="border border-white/30 text-white px-8 py-4 rounded-sm font-bold hover:bg-white/10 transition-all backdrop-blur-sm">
                 Conoce nuestros servicios
               </button>
@@ -177,28 +194,26 @@ const About = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
+            className="bg-primary text-white p-12 rounded-sm"
           >
-            <span className="text-secondary font-display font-bold text-xs uppercase tracking-[0.2em] mb-4 block">Quiénes somos</span>
-            <h2 className="text-3xl md:text-5xl font-display font-bold text-primary mb-8 leading-tight">
-              Más que consultores, somos <span className="text-secondary font-accent italic font-normal">aliados estratégicos</span> de tu crecimiento.
+            <span className="text-secondary font-display font-bold text-xs uppercase tracking-[0.2em] mb-4 block">Karen Gamarra - CEO & Founder</span>
+            <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-8 leading-tight">
+              Construyendo una <span className="text-secondary font-accent italic font-normal">consultora humana</span>, sólida y estratégica para el Norte del país.
             </h2>
-            <div className="space-y-6 text-carbon/80 text-lg leading-relaxed">
+            <div className="space-y-6 text-white/80 text-lg leading-relaxed">
               <p>
-                En Warmi Kapital entendemos que cada decisión legal o financiera tiene un impacto profundo en la vida de las personas y el futuro de las empresas. Por ello, integramos el rigor técnico con una visión humana y corporativa.
-              </p>
-              <p>
-                No solo resolvemos problemas legales; entendemos contextos, humanizamos las finanzas y traducimos lo complejo en claridad estratégica. Nuestro enfoque es preventivo, sólido e inteligente.
+                "Mi visión con Warmi Kapital siempre ha sido clara: romper la frialdad del sector legal y corporativo. Creo firmemente que las decisiones más importantes del ser humano y las empresas requieren un acompañamiento técnico de alto nivel, pero profundamente humano."
               </p>
             </div>
             
             <div className="grid grid-cols-2 gap-8 mt-12">
               <div className="border-l-2 border-secondary pl-6">
-                <h4 className="text-2xl font-display font-bold text-primary mb-1">+10</h4>
-                <p className="text-sm text-carbon/60 uppercase tracking-wider font-bold">Años de Criterio</p>
+                <h4 className="text-2xl font-display font-bold text-white mb-1">+5</h4>
+                <p className="text-sm text-white/60 uppercase tracking-wider font-bold">Años de Criterio</p>
               </div>
               <div className="border-l-2 border-secondary pl-6">
-                <h4 className="text-2xl font-display font-bold text-primary mb-1">100%</h4>
-                <p className="text-sm text-carbon/60 uppercase tracking-wider font-bold">Enfoque Humano</p>
+                <h4 className="text-2xl font-display font-bold text-white mb-1">100%</h4>
+                <p className="text-sm text-white/60 uppercase tracking-wider font-bold">Enfoque Humano</p>
               </div>
             </div>
           </motion.div>
@@ -210,16 +225,15 @@ const About = () => {
             transition={{ duration: 0.8 }}
             className="relative"
           >
-            <div className="aspect-[4/5] rounded-sm overflow-hidden shadow-2xl relative z-10">
+            <div className="aspect-[3/4] rounded-sm overflow-hidden shadow-2xl relative z-10">
               <img 
-                src="https://images.unsplash.com/photo-1573164060897-425941c30241?q=80&w=2069&auto=format&fit=crop" 
-                alt="Professional consultation" 
+                src="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816586/KarenG_ipglgk.png" 
+                alt="Karen Gamarra" 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />
             </div>
-            <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-primary z-0 rounded-sm opacity-10" />
-            <div className="absolute -top-6 -left-6 border-2 border-secondary w-32 h-32 z-0 opacity-40" />
+            <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-secondary z-0 rounded-sm opacity-20" />
           </motion.div>
         </div>
       </div>
@@ -280,16 +294,16 @@ const Services = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="card-premium group hover:bg-primary hover:text-white transition-all duration-500"
+              className="bg-white border border-primary/10 p-8 rounded-sm shadow-sm group hover:bg-primary transition-colors duration-500"
             >
-              <div className="mb-6 bg-primary/5 w-16 h-16 flex items-center justify-center rounded-sm group-hover:bg-white/10">
+              <div className="mb-6 bg-primary/5 w-16 h-16 flex items-center justify-center rounded-sm group-hover:bg-white/10 transition-colors">
                 {item.icon}
               </div>
-              <h3 className="text-xl font-display font-bold mb-4">{item.title}</h3>
-              <p className="text-carbon/60 group-hover:text-white/70 leading-relaxed">
+              <h3 className="text-xl font-display font-bold mb-4 text-primary group-hover:text-white transition-colors">{item.title}</h3>
+              <p className="text-carbon/60 group-hover:text-white/90 leading-relaxed transition-colors">
                 {item.description}
               </p>
-              <div className="mt-8 flex items-center gap-2 text-secondary font-bold text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="mt-8 flex items-center gap-2 text-secondary font-bold text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all">
                 Saber más <ChevronRight size={14} />
               </div>
             </motion.div>
@@ -302,45 +316,25 @@ const Services = () => {
 
 const Differentiator = () => {
   return (
-    <section className="py-24 bg-primary text-white overflow-hidden relative">
-      {/* Decorative background elements */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-secondary/10 skew-x-12 translate-x-20" />
+    <section className="py-0 overflow-hidden relative min-h-[500px] flex items-center">
+      <div className="absolute inset-0 z-0">
+         <img 
+            src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2070&auto=format&fit=crop" 
+            alt="Estrategia financiera" 
+            className="w-full h-full object-cover"
+            referrerPolicy="no-referrer"
+         />
+         <div className="absolute inset-0 bg-primary/90" />
+      </div>
       
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-6 relative z-10 py-24">
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="bg-white/5 backdrop-blur-md rounded-sm p-12 border border-white/10"
-          >
-            <div className="flex flex-col gap-8">
-              <div className="flex items-center gap-8">
-                <div className="flex flex-col items-center">
-                  <div className="w-20 h-20 rounded-full border-2 border-secondary flex items-center justify-center text-secondary mb-4 italic font-accent text-lg">Legal</div>
-                  <Scale size={32} className="text-white/20" />
-                </div>
-                <div className="text-4xl font-display font-bold text-secondary">+</div>
-                <div className="flex flex-col items-center">
-                  <div className="w-20 h-20 rounded-full border-2 border-secondary flex items-center justify-center text-secondary mb-4 italic font-accent text-lg">Financiero</div>
-                  <TrendingUp size={32} className="text-white/20" />
-                </div>
-              </div>
-              
-              <div className="h-px bg-white/10 w-full" />
-              
-              <div className="text-center">
-                <h3 className="text-2xl font-display font-bold mb-2">Decisiones Inteligentes</h3>
-                <p className="text-white/50 text-sm">El diferencial que asegura tu futuro.</p>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
+            className="text-white"
           >
             <span className="text-secondary font-display font-bold text-xs uppercase tracking-[0.2em] mb-4 block">Nuestra Fórmula</span>
             <h2 className="text-4xl md:text-6xl font-display font-bold mb-8">
@@ -406,13 +400,13 @@ const Team = () => {
           <TeamMember 
             name="Karen Gamarra" 
             role="CEO & Founder" 
-            image="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop" 
+            image="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816586/KarenG_ipglgk.png" 
             size="lg" 
           />
           <TeamMember 
             name="Natali" 
             role="Socia · Ing. de Minas" 
-            image="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=2070&auto=format&fit=crop" 
+            image="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=1974&auto=format&fit=crop" 
             size="lg" 
           />
         </div>
@@ -421,17 +415,17 @@ const Team = () => {
         <div className="mb-20">
           <h5 className="text-center text-primary font-display font-bold mb-12 opacity-50 uppercase tracking-[0.3em] text-xs">Asistentes Junior</h5>
           <div className="grid grid-cols-2 md:grid-cols-2 max-w-2xl mx-auto gap-12">
-            <TeamMember name="Belen" role="Asistente Junior" image="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop" />
-            <TeamMember name="Stefani" role="Asistente Junior" image="https://images.unsplash.com/photo-1544005313-921f44a4ea06?q=80&w=1976&auto=format&fit=crop" />
+            <TeamMember name="Belen" role="Asistente Junior" image="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816584/WhatsApp_Image_2026-05-13_at_8.14.01_PM_1_xcejlh.jpg" />
+            <TeamMember name="Stefani" role="Asistente Junior" image="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816585/WhatsApp_Image_2026-05-13_at_8.13.59_PM_3_hkepw6.jpg" />
           </div>
         </div>
 
         {/* External consultants */}
         <div>
-          <h5 className="text-center text-primary font-display font-bold mb-12 opacity-50 uppercase tracking-[0.3em] text-xs">Consultoras Externas</h5>
+          <h5 className="text-center text-primary font-display font-bold mb-12 opacity-50 uppercase tracking-[0.3em] text-xs">Equipo de consultoría</h5>
           <div className="grid grid-cols-2 md:grid-cols-2 max-w-2xl mx-auto gap-12">
-            <TeamMember name="Betsi" role="Especialista de OxI" image="https://images.unsplash.com/photo-1554151228-14d9def656e4?q=80&w=1972&auto=format&fit=crop" />
-            <TeamMember name="Alexi" role="Especialista en OxI" image="https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?q=80&w=1974&auto=format&fit=crop" />
+            <TeamMember name="Betsi" role="Especialista de OxI" image="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816585/BetsyM_jrzhyw.png" />
+            <TeamMember name="Alexi" role="Especialista en OxI" image="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop" />
           </div>
         </div>
       </div>
@@ -469,6 +463,13 @@ const Vision = () => {
 };
 
 const Contact = () => {
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+
+  const handleWhatsappFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    window.open(getWhatsAppUrl({ name: formData.name, message: formData.message }), "_blank");
+  };
+
   return (
     <section id="contacto" className="py-24 bg-bg-sand">
       <div className="container mx-auto px-6">
@@ -487,9 +488,13 @@ const Contact = () => {
                   <div className="bg-secondary p-3 rounded-sm">
                     <MapPin size={24} className="text-white" />
                   </div>
-                  <div>
-                    <h5 className="font-display font-bold text-secondary mb-1 uppercase tracking-widest text-xs">Ubicación</h5>
-                    <p className="text-white/90">Sede Principal, Norte del País</p>
+                  <div className="space-y-4">
+                    <h5 className="font-display font-bold text-secondary mb-1 uppercase tracking-widest text-xs">Ubícanos en</h5>
+                    <div className="text-white/90 space-y-2 text-sm">
+                       <p><span className="font-bold text-secondary">Trujillo:</span> Calle Cavero y Muñoz #735, Las Quintanas</p>
+                       <p><span className="font-bold text-secondary">Trujillo:</span> Los Cipreses 468, Víctor Larco Herrera 13009</p>
+                       <p><span className="font-bold text-secondary">Lima:</span> Av. Emilio Cavenecia #151, Piso 7, Miraflores</p>
+                    </div>
                   </div>
                 </div>
                 
@@ -499,7 +504,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h5 className="font-display font-bold text-secondary mb-1 uppercase tracking-widest text-xs">Teléfono</h5>
-                    <p className="text-white/90">+51 900 000 000</p>
+                    <p className="text-white/90">+51 932 340 282</p>
                   </div>
                 </div>
                 
@@ -509,27 +514,27 @@ const Contact = () => {
                   </div>
                   <div>
                     <h5 className="font-display font-bold text-secondary mb-1 uppercase tracking-widest text-xs">Email</h5>
-                    <p className="text-white/90">contacto@warmikapital.com</p>
+                    <p className="text-white/90">contacto@warmikapital.com.pe</p>
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="bg-white p-12 md:p-20">
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleWhatsappFormSubmit}>
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-primary/60 mb-2">Nombre Completo</label>
-                  <input type="text" className="w-full border-b border-primary/10 py-3 focus:outline-none focus:border-secondary transition-colors" placeholder="Tu nombre" />
+                  <input type="text" required className="w-full border-b border-primary/10 py-3 focus:outline-none focus:border-secondary transition-colors" placeholder="Tu nombre" onChange={(e) => setFormData({...formData, name: e.target.value})} />
                 </div>
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-primary/60 mb-2">Email Corporativo</label>
-                  <input type="email" className="w-full border-b border-primary/10 py-3 focus:outline-none focus:border-secondary transition-colors" placeholder="email@empresa.com" />
+                  <input type="email" required className="w-full border-b border-primary/10 py-3 focus:outline-none focus:border-secondary transition-colors" placeholder="email@empresa.com" onChange={(e) => setFormData({...formData, email: e.target.value})} />
                 </div>
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-primary/60 mb-2">Mensaje</label>
-                  <textarea rows={4} className="w-full border-b border-primary/10 py-3 focus:outline-none focus:border-secondary transition-colors resize-none" placeholder="¿En qué podemos ayudarte?"></textarea>
+                  <textarea rows={4} required className="w-full border-b border-primary/10 py-3 focus:outline-none focus:border-secondary transition-colors resize-none" placeholder="¿En qué podemos ayudarte?" onChange={(e) => setFormData({...formData, message: e.target.value})}></textarea>
                 </div>
-                <button className="w-full bg-secondary text-white py-4 rounded-sm font-bold flex items-center justify-center gap-2 hover:bg-secondary/90 transition-all shadow-lg shadow-secondary/20 uppercase tracking-[0.2em] text-sm mt-8">
+                <button type="submit" className="w-full bg-secondary text-white py-4 rounded-sm font-bold flex items-center justify-center gap-2 hover:bg-secondary/90 transition-all shadow-lg shadow-secondary/20 uppercase tracking-[0.2em] text-sm mt-8">
                   Agendar asesoría <Calendar size={18} />
                 </button>
               </form>
@@ -548,22 +553,19 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20 text-white">
           <div className="col-span-1 lg:col-span-1">
             <div className="flex items-center gap-2 mb-8">
-              <div className="w-10 h-10 bg-secondary flex items-center justify-center rounded-sm">
-                <span className="text-primary font-display font-bold text-xl">WK</span>
-              </div>
-              <span className="font-display font-bold text-xl tracking-tighter">
-                WARMI <span className="text-secondary">KAPITAL</span>
-              </span>
+              <img 
+                src="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816751/Recurso_9_hkq6bi.png" 
+                alt="Warmi Kapital Logo" 
+                className="h-12 w-auto brightness-0 invert"
+                referrerPolicy="no-referrer"
+              />
             </div>
             <p className="text-white/50 leading-relaxed mb-8">
               Firma jurídico-financiera que combina rigor, visión y humanidad para acompañar decisiones que construyen futuro.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-secondary hover:border-secondary transition-all">
+              <a href="https://www.linkedin.com/company/warmi-kapital/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-secondary hover:border-secondary transition-all">
                 <Linkedin size={18} />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-secondary hover:border-secondary transition-all">
-                <Instagram size={18} />
               </a>
             </div>
           </div>
@@ -571,30 +573,25 @@ const Footer = () => {
           <div className="col-span-1">
             <h5 className="font-display font-bold text-secondary mb-8 uppercase tracking-widest text-xs">Empresa</h5>
             <div className="flex flex-col gap-4 text-white/60">
-              <a href="#" className="hover:text-white transition-colors">Nosotros</a>
-              <a href="#" className="hover:text-white transition-colors">Servicios</a>
-              <a href="#" className="hover:text-white transition-colors">Equipo</a>
-              <a href="#" className="hover:text-white transition-colors">Decisión Estratégica</a>
+              <a href="#nosotros" className="hover:text-white transition-colors">Nosotros</a>
+              <a href="#servicios" className="hover:text-white transition-colors">Servicios</a>
+              <a href="#equipo" className="hover:text-white transition-colors">Equipo</a>
             </div>
           </div>
 
           <div className="col-span-1">
             <h5 className="font-display font-bold text-secondary mb-8 uppercase tracking-widest text-xs">Especialidades</h5>
             <div className="flex flex-col gap-4 text-white/60">
-              <a href="#" className="hover:text-white transition-colors">Derecho Financiero</a>
-              <a href="#" className="hover:text-white transition-colors">Derecho Tributario</a>
-              <a href="#" className="hover:text-white transition-colors">Propiedad Intelectual</a>
-              <a href="#" className="hover:text-white transition-colors">Obras por Impuestos</a>
+              <a href="#servicios" className="hover:text-white transition-colors">Derecho Financiero</a>
+              <a href="#servicios" className="hover:text-white transition-colors">Derecho Tributario</a>
+              <a href="#servicios" className="hover:text-white transition-colors">Propiedad Intelectual</a>
+              <a href="#servicios" className="hover:text-white transition-colors">Obras por Impuestos</a>
             </div>
           </div>
 
           <div className="col-span-1">
             <h5 className="font-display font-bold text-secondary mb-8 uppercase tracking-widest text-xs">Legal</h5>
-            <div className="flex flex-col gap-4 text-white/60">
-              <a href="#" className="hover:text-white transition-colors">Privacidad</a>
-              <a href="#" className="hover:text-white transition-colors">Términos</a>
-              <a href="#" className="hover:text-white transition-colors">Cookies</a>
-            </div>
+            {/* Removed internal legal links */}
           </div>
         </div>
 
@@ -622,6 +619,7 @@ export default function App() {
       <Team />
       <Vision />
       <Contact />
+      <WhatsAppFloatingButton />
       <Footer />
     </div>
   );
