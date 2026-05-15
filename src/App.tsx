@@ -180,12 +180,12 @@ const Hero = () => {
               <span className="w-1.5 h-1.5 rounded-full bg-secondary inline-block"></span> Estudio Jurídico Especializado en Derecho y Finanzas Corporativas.
             </p>
             <div className="flex flex-col sm:flex-row gap-5">
-              <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="bg-secondary text-primary px-8 py-4 rounded-sm font-sans font-semibold flex items-center justify-center gap-2 hover:bg-white hover:text-primary transition-all duration-300">
+              <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="bg-secondary text-primary px-8 py-4 rounded-sm font-sans font-semibold flex items-center justify-center gap-2 hover:bg-white hover:text-primary hover:-translate-y-0.5 hover:shadow-xl hover:shadow-secondary/20 transition-all duration-300">
                 Agendar Consulta Ejecutiva
               </a>
-              <button className="border border-white/20 text-white px-8 py-4 rounded-sm font-sans font-semibold hover:bg-white/5 transition-all duration-300">
+              <a href="#nosotros" className="border border-white/20 text-white px-8 py-4 rounded-sm font-sans font-semibold flex items-center justify-center hover:bg-white/5 hover:border-white/40 transition-all duration-300">
                 Conocer la Firma
-              </button>
+              </a>
             </div>
           </motion.div>
         </div>
@@ -194,11 +194,11 @@ const Hero = () => {
       {/* Trust bar */}
       <div className="absolute bottom-0 w-full border-t border-white/10 bg-primary/50 backdrop-blur-md">
          <div className="container mx-auto px-6 py-6 font-sans">
-             <div className="flex flex-wrap justify-between items-center gap-6 text-sm text-white/60 tracking-wider">
-                 <div className="flex items-center gap-2 font-semibold text-white/90"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> +15 Años de Experiencia</div>
-                 <div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> Trujillo & Lima</div>
-                 <div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> Integración Legal + Financiera</div>
-                 <div className="flex items-center gap-2 hidden lg:flex"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> Corporativo · Tributario · Minería · OxI</div>
+             <div className="flex flex-wrap justify-between items-center gap-6 text-xs md:text-sm text-white/60 tracking-wider">
+                 <div className="flex items-center gap-3 font-semibold text-white/90"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> +15 Años de Experiencia</div>
+                 <div className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> Trujillo & Lima</div>
+                 <div className="flex items-center gap-3"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> Integración Legal + Financiera</div>
+                 <div className="flex items-center gap-3 hidden lg:flex"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> Corporativo · Tributario · Minería · OxI</div>
              </div>
          </div>
       </div>
@@ -244,7 +244,7 @@ const About = () => {
             className="lg:col-span-7 lg:pl-10 text-primary"
           >
             <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-4 block">Liderazgo & Visión</span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium mb-8 leading-[1.1] text-primary">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium mb-8 leading-[1.1] text-primary tracking-tight">
               Construyendo la <span className="text-secondary italic">consultora del futuro</span> para el norte del país.
             </h2>
             <div className="space-y-6 text-carbon/80 text-lg leading-relaxed font-sans font-light">
@@ -282,7 +282,7 @@ const VulnerabilitySection = () => {
           <span className="text-secondary font-sans font-semibold text-sm uppercase tracking-[0.2em] mb-6 block">
             El Problema del Crecimiento
           </span>
-          <h2 className="text-3xl md:text-5xl font-display font-medium leading-[1.2] mb-8">
+          <h2 className="text-3xl md:text-5xl font-display font-medium leading-[1.2] mb-8 tracking-tight">
             Tu empresa factura millones, pero tu <span className="text-secondary italic">estructura legal</span> es frágil.
           </h2>
           <p className="text-lg md:text-xl text-white/70 font-sans font-light leading-relaxed mb-12">
@@ -349,7 +349,7 @@ const Services = () => {
       <div className="container mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-20">
           <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-4 block">Capacidades Estratégicas</span>
-          <h2 className="text-4xl md:text-5xl font-display font-medium text-primary mb-6">Blindaje y Estructuración</h2>
+          <h2 className="text-4xl md:text-5xl font-display font-medium text-primary mb-6 tracking-tight">Blindaje y Estructuración</h2>
           <p className="text-carbon/70 text-lg font-sans font-light">
             Soluciones jurídicas y financieras de alta especialidad. Operamos como el escudo estratégico de su empresa frente a los escenarios corporativos más exigentes.
           </p>
@@ -363,13 +363,13 @@ const Services = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="bg-white border-t-2 border-transparent p-10 shadow-sm hover:shadow-xl hover:border-secondary transition-all duration-300 group flex flex-col h-full"
+              className="bg-white border text-left p-10 lg:p-12 border border-primary/5 hover:border-secondary/30 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 group flex flex-col h-full rounded-sm"
             >
-              <div className="mb-6 mb-auto">
+              <div className="mb-8 mb-auto opacity-80 group-hover:opacity-100 transition-opacity">
                 {item.icon}
               </div>
-              <h3 className="text-2xl font-display font-medium mb-4 text-primary">{item.title}</h3>
-              <p className="text-carbon/60 leading-relaxed font-sans font-light text-sm">
+              <h3 className="text-2xl font-display font-medium mb-4 text-primary tracking-tight group-hover:text-secondary transition-colors">{item.title}</h3>
+              <p className="text-carbon/70 leading-relaxed font-sans font-light text-sm lg:text-base">
                 {item.description}
               </p>
             </motion.div>
@@ -410,14 +410,14 @@ const Differentiator = () => {
         <div className="grid lg:grid-cols-12 gap-16">
           <div className="lg:col-span-5">
             <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-4 block">El Estándar Warmi</span>
-            <h2 className="text-4xl md:text-5xl font-display font-medium text-white mb-8 leading-[1.2]">
+            <h2 className="text-4xl md:text-5xl font-display font-medium text-white mb-8 leading-[1.2] tracking-tight">
               ¿Por qué las empresas nos confían sus decisiones <span className="text-secondary italic">críticas</span>?
             </h2>
             <p className="text-lg text-white/70 font-sans font-light leading-relaxed mb-10">
               Transformamos la complejidad legal y tributaria en ventajas competitivas claras. Nuestro modelo elimina la burocracia tradicional de los grandes estudios.
             </p>
-            <a href="https://wa.me/51932340282?text=Hola,%20me%20gustar%C3%ADa%20agendar%20una%20consulta%20en%20Warmi%20Kapital." target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 text-secondary font-sans font-semibold uppercase tracking-wider text-sm hover:text-white transition-colors">
-              Hablemos de negocios <ArrowRight size={16} />
+            <a href="https://wa.me/51932340282?text=Hola,%20me%20gustar%C3%ADa%20agendar%20una%20consulta%20en%20Warmi%20Kapital." target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 text-secondary font-sans font-semibold uppercase tracking-widest text-xs hover:text-white hover:gap-4 transition-all duration-300 mt-4">
+              Iniciar estructuración estratégica <ArrowRight size={16} />
             </a>
           </div>
           
@@ -564,7 +564,7 @@ const Team = () => {
       <div className="container mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-24">
           <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-4 block">Liderazgo Corporativo</span>
-          <h2 className="text-4xl md:text-5xl font-display font-medium text-primary mb-6">Capital Humano</h2>
+          <h2 className="text-4xl md:text-5xl font-display font-medium text-primary mb-6 tracking-tight">Capital Humano</h2>
           <p className="text-carbon/70 text-lg font-sans font-light">
             Un equipo estructurado bajo estándares de firmas globales. Integramos rigor jurídico, visión financiera y experiencia sectorial técnica.
           </p>
@@ -621,8 +621,8 @@ const Vision = () => {
             <Lightbulb className="text-secondary" size={48} />
           </div>
           <span className="text-secondary font-display font-bold text-sm uppercase tracking-[0.4em] mb-6 block">Visión de Futuro</span>
-          <h2 className="text-4xl md:text-7xl font-display font-bold text-primary mb-12 leading-tight max-w-5xl mx-auto">
-            Ser la mayor consultora <span className="italic font-accent font-normal text-secondary">jurídico-financiera</span> del norte del país.
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-display font-medium text-primary mb-12 leading-[1.1] max-w-5xl mx-auto tracking-tight">
+            Ser la firma jurídico-financiera de <span className="text-secondary italic">mayor influencia corporativa</span> en el norte del país.
           </h2>
           <div className="w-24 h-1 bg-secondary mx-auto" />
         </motion.div>
@@ -649,12 +649,13 @@ const Contact = () => {
       <div className="container mx-auto px-6">
         <div className="bg-primary rounded-sm shadow-2xl overflow-hidden">
           <div className="grid lg:grid-cols-2">
-            <div className="p-12 md:p-20 text-white">
-              <h2 className="text-4xl font-display font-bold mb-8">
-                Hablemos de tu siguiente decisión estratégica.
+             <div className="p-12 md:p-20 text-white flex flex-col justify-center">
+              <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-6 block">Diagnóstico Inicial</span>
+              <h2 className="text-4xl md:text-5xl font-display font-medium mb-8 tracking-tight leading-[1.1]">
+                Hablemos de tu siguiente <span className="text-secondary italic">decisión crítica.</span>
               </h2>
-              <p className="text-white/70 text-lg mb-12">
-                Estamos listos para escucharte y diseñar la ruta inteligente que tu empresa necesita.
+              <p className="text-white/60 text-lg mb-16 font-light leading-relaxed max-w-md">
+                Agenda una sesión ejecutiva para analizar la exposición legal y financiera de tu empresa, con absoluta reserva profesional.
               </p>
               
               <div className="space-y-8">
@@ -708,8 +709,8 @@ const Contact = () => {
                   <label className="block text-xs font-bold uppercase tracking-wider text-primary/60 mb-2">Mensaje</label>
                   <textarea rows={4} required className="w-full border-b border-primary/10 py-3 focus:outline-none focus:border-secondary transition-colors resize-none" placeholder="¿En qué podemos ayudarte?" onChange={(e) => setFormData({...formData, message: e.target.value})}></textarea>
                 </div>
-                <button type="submit" className="w-full bg-secondary text-primary py-4 rounded-sm font-semibold flex items-center justify-center gap-2 hover:bg-primary hover:text-white transition-all shadow-lg shadow-secondary/20 uppercase tracking-[0.2em] text-sm mt-8 font-sans">
-                  Solicitar Asesoría Ejecutiva <ArrowRight size={18} />
+                <button type="submit" className="w-full bg-secondary text-primary py-4 rounded-sm font-semibold flex items-center justify-center gap-2 hover:bg-primary hover:text-white hover:border-white border border-transparent transition-all hover:shadow-2xl hover:shadow-primary/20 uppercase tracking-[0.2em] text-sm mt-8 font-sans">
+                  Solicitar Sesión Confidencial <ArrowRight size={18} />
                 </button>
               </form>
             </div>
