@@ -163,13 +163,16 @@ const Hero = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <span className="text-secondary font-sans font-semibold text-sm uppercase tracking-[0.2em] mb-6 block">
-              Boutique Legal & Financiera
+              Firma de Ingeniería Legal y Financiera
             </span>
             <h1 className="text-5xl md:text-7xl font-display font-medium text-white leading-[1.1] mb-8">
-              Estrategia corporativa con <span className="text-secondary italic">visión y rigor.</span>
+              El escudo corporativo para empresas que <span className="text-secondary italic">escalan sin vértigo.</span>
             </h1>
-            <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl font-sans font-light leading-relaxed">
-              Warmi Kapital asesora a empresas líderes y ejecutivos en decisiones críticas. Integramos derecho, finanzas y estrategia corporativa para impulsar su crecimiento con seguridad y visión humana.
+            <p className="text-xl md:text-2xl text-white/80 mb-6 max-w-3xl font-sans font-light leading-relaxed">
+              Tu negocio ya genera valor; nuestro trabajo es blindarlo. Estructuración legal, tributaria y financiera para directivos estratégicos enfocados en resultados.
+            </p>
+            <p className="text-sm text-secondary/90 mb-12 max-w-3xl font-sans uppercase tracking-[0.1em] font-semibold flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-secondary inline-block"></span> Estudio Jurídico Boutique de Ingeniería Legal y Financiera.
             </p>
             <div className="flex flex-col sm:flex-row gap-5">
               <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="bg-secondary text-primary px-8 py-4 rounded-sm font-sans font-semibold flex items-center justify-center gap-2 hover:bg-white hover:text-primary transition-all duration-300">
@@ -187,10 +190,10 @@ const Hero = () => {
       <div className="absolute bottom-0 w-full border-t border-white/10 bg-primary/50 backdrop-blur-md">
          <div className="container mx-auto px-6 py-6 font-sans">
              <div className="flex flex-wrap justify-between items-center gap-6 text-sm text-white/60 tracking-wider">
-                 <div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> M&A y Finanzas</div>
-                 <div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> Derecho Corporativo</div>
-                 <div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> Tributación Estratégica</div>
-                 <div className="flex items-center gap-2 hidden md:flex"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> Obras por Impuestos</div>
+                 <div className="flex items-center gap-2 font-semibold text-white/90"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> +15 Años de Experiencia</div>
+                 <div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> Trujillo & Lima</div>
+                 <div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> Integración Legal + Financiera</div>
+                 <div className="flex items-center gap-2 hidden lg:flex"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> Corporativo · Tributario · Minería · OxI</div>
              </div>
          </div>
       </div>
@@ -244,7 +247,7 @@ const About = () => {
                 "Mi visión con Warmi Kapital siempre ha sido clara: transformar el paradigma de la consultoría tradicional. El sector legal y financiero a menudo peca de ser frío, distante y poco empático con la realidad operativa del empresario."
               </p>
               <p>
-                "Creé esta firma para que las empresas y líderes del mid-market peruano, especialmente en el norte del país, tengan acceso a una estructuración técnica de nivel corporativo global, pero entregada con la cercanía, la claridad y el trato humano que las decisiones críticas exigen. No somos proveedores; somos sus socios estratégicos."
+                "Creé esta firma para que las empresas y líderes del mid-market peruano, especialmente en el norte del país, tengan acceso a una estructuración técnica de nivel corporativo global, pero entregada con la cercanía, la claridad y el trato humano que las decisiones críticas exigen. Actuamos como verdaderos socios estratégicos para su negocio."
               </p>
             </div>
             
@@ -265,36 +268,73 @@ const About = () => {
   );
 };
 
+const VulnerabilitySection = () => {
+  return (
+    <section className="py-24 bg-carbon text-white relative border-y border-white/5">
+      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop')] opacity-10 bg-cover bg-center grayscale mix-blend-overlay" />
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-4xl mx-auto text-center">
+          <span className="text-secondary font-sans font-semibold text-sm uppercase tracking-[0.2em] mb-6 block">
+            El Problema del Crecimiento
+          </span>
+          <h2 className="text-3xl md:text-5xl font-display font-medium leading-[1.2] mb-8">
+            Tu empresa factura millones, pero tu <span className="text-secondary italic">estructura legal</span> es frágil.
+          </h2>
+          <p className="text-lg md:text-xl text-white/70 font-sans font-light leading-relaxed mb-12">
+            El mayor riesgo de un CEO no son las bajas ventas, es el crecimiento sin orden. 
+            Contratos débiles, exposición ante SUNAT, accionistas desprotegidos y 
+            contingencias que amenazan con destruir en meses lo que construiste en años.
+          </p>
+          <div className="grid sm:grid-cols-3 gap-8 text-left border-t border-white/10 pt-12">
+             <div>
+                <h4 className="text-secondary font-display text-xl mb-3 font-medium">1. Fiscos y Multas</h4>
+                <p className="text-white/60 text-sm font-light leading-relaxed">Una auditoría mal manejada o una estructura fiscal ineficiente puede asfixiar el flujo de caja corporativo.</p>
+             </div>
+             <div>
+                <h4 className="text-secondary font-display text-xl mb-3 font-medium">2. Sociedades de Papel</h4>
+                <p className="text-white/60 text-sm font-light leading-relaxed">Accionistas sin acuerdos claros terminan bloqueando las decisiones críticas y amenazando la operatividad.</p>
+             </div>
+             <div>
+                <h4 className="text-secondary font-display text-xl mb-3 font-medium">3. Contratos Vacíos</h4>
+                <p className="text-white/60 text-sm font-light leading-relaxed">Plantillas descargadas, o acuerdos sin rigor legal que exponen injustificadamente tu patrimonio personal.</p>
+             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Services = () => {
   const services = [
     {
-      title: "Derecho Corporativo y M&A",
-      description: "Estructuración de sociedades, fusiones, adquisiciones y gobierno corporativo para blindar el valor de su empresa.",
+      title: "Arquitectura Corporativa y M&A",
+      description: "Construimos empresas y blindamos patrimonios. Estructuras societarias, acuerdos de accionistas y operaciones de fusiones con máxima seguridad corporativa.",
       icon: <Building2 className="text-secondary" size={32} />,
     },
     {
-      title: "Estrategia Tributaria",
-      description: "Planeamiento fiscal sofisticado, defensa ante auditorías y optimización de cargas impositivas con rigor legal.",
+      title: "Defensa y Escudo Tributario",
+      description: "Rentabilidad protegida. Planeamiento fiscal corporativo, prevención de contingencias y defensa frontal y agresiva ante auditorías de SUNAT.",
       icon: <ShieldCheck className="text-secondary" size={32} />,
     },
     {
-      title: "Finanzas Estructurales",
-      description: "Acompañamiento en financiamientos, reestructuración de deuda y evaluación de proyectos de inversión.",
+      title: "Ingeniería Financiera",
+      description: "Estructuración de flujos, reestructuración estratégica de deuda pesada y modelado financiero para asegurar tu liquidez al crecer.",
       icon: <LineChart className="text-secondary" size={32} />,
     },
     {
-      title: "Derecho Minero y Energía",
-      description: "Asesoría altamente especializada para la obtención de concesiones, permisos y negociación de contratos.",
+      title: "Minería y Energía",
+      description: "Desbloqueo de concesiones y blindaje de contratos a prueba de fallas. Seguridad jurídica implacable para operaciones de alto CAPEX.",
       icon: <Pickaxe className="text-secondary" size={32} />,
     },
     {
-      title: "Propiedad Intelectual",
-      description: "Gestión estratégica y protección global de activos intangibles, marcas, patentes y derechos de autor.",
+      title: "Protección de Intangibles",
+      description: "El valor real de tu negocio. Auditamos, protegemos y monetizamos tus marcas, patentes y know-how técnico a nivel global.",
       icon: <ShieldAlert className="text-secondary" size={32} />,
     },
     {
       title: "Obras por Impuestos (OxI)",
-      description: "Acompañamiento técnico y legal de extremo a extremo para la ejecución de proyectos de alto impacto social.",
+      description: "Transforma impuestos en influencia. Acompañamiento técnico, financiero y legal desde el diseño de pre-inversión hasta la ejecución.",
       icon: <FileCheck className="text-secondary" size={32} />,
     },
   ];
@@ -303,10 +343,10 @@ const Services = () => {
     <section id="servicios" className="py-32 bg-bg-sand">
       <div className="container mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-4 block">Áreas de Práctica</span>
-          <h2 className="text-4xl md:text-5xl font-display font-medium text-primary mb-6">Expertise Integral</h2>
+          <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-4 block">Capacidades Estratégicas</span>
+          <h2 className="text-4xl md:text-5xl font-display font-medium text-primary mb-6">Blindaje y Estructuración</h2>
           <p className="text-carbon/70 text-lg font-sans font-light">
-            Soluciones estructuradas para los desafíos más complejos del entorno corporativo y financiero.
+            Soluciones jurídicas y financieras de alta especialidad. Operamos como el escudo estratégico de su empresa frente a los escenarios corporativos más exigentes.
           </p>
         </div>
 
@@ -344,7 +384,7 @@ const Differentiator = () => {
     },
     {
       title: "Intelectualidad Financiera",
-      desc: "No solo redactamos contratos; entendemos los balances, los márgenes y la estructura de capital detrás de cada decisión.",
+      desc: "Alineamos la estrategia legal con el desempeño económico empresarial. Entendemos los márgenes y la estructura de capital detrás de cada decisión corporativa.",
       icon: <LineChart className="text-secondary" size={24} />
     },
     {
@@ -649,6 +689,7 @@ export default function App() {
       <Navbar />
       <Hero />
       <About />
+      <VulnerabilitySection />
       <Services />
       <Differentiator />
       <Team />
