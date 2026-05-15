@@ -441,72 +441,161 @@ const Differentiator = () => {
   );
 };
 
-const TeamMember = ({ name, role, image, size = "md" }: { name: string, role: string, image: string, size?: "lg" | "md" | "sm" }) => (
-  <motion.div 
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    className="group"
-  >
-    <div className={`overflow-hidden rounded-sm mb-6 ${size === "lg" ? "aspect-[4/5]" : "aspect-[3/4]"}`}>
-      <img 
-        src={image} 
-        alt={name} 
-        className="w-full h-full object-cover grayscale mix-blend-multiply opacity-90 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
-        referrerPolicy="no-referrer"
-      />
-    </div>
-    <div className="border-l-2 border-secondary pl-4">
-      <h4 className={`font-display font-medium text-primary ${size === "lg" ? "text-2xl" : "text-xl"} mb-1`}>{name}</h4>
-      <p className="text-carbon/60 font-sans text-xs uppercase tracking-widest">{role}</p>
-    </div>
-  </motion.div>
-);
+type TeamMemberData = {
+  name: string;
+  role: string;
+  bio: string;
+  image: string;
+};
+
+const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadership' | 'consultant' | 'legal' }) => {
+  if (tier === 'leadership') {
+    return (
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="group flex flex-col h-full"
+      >
+         <div className="overflow-hidden aspect-[4/5] w-full mb-8 relative bg-white border border-primary/5 group-hover:border-secondary/30 transition-colors duration-500 rounded-sm">
+             <img src={member.image} alt={member.name} className="w-full h-full object-cover grayscale mix-blend-multiply opacity-90 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 origin-bottom" referrerPolicy="no-referrer" />
+         </div>
+         <div className="flex-1 flex flex-col border-l-2 border-secondary pl-5 py-1">
+             <h4 className="font-sans font-bold text-3xl text-primary mb-1">{member.name}</h4>
+             <p className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-5">{member.role}</p>
+             <p className="text-carbon/80 font-sans font-light leading-relaxed text-base">{member.bio}</p>
+         </div>
+      </motion.div>
+    );
+  }
+
+  if (tier === 'consultant') {
+    return (
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="group flex flex-col h-full"
+      >
+         <div className="overflow-hidden aspect-[4/5] w-full mb-6 relative bg-white border border-primary/5 group-hover:border-secondary/20 transition-colors duration-500 rounded-sm">
+             <img src={member.image} alt={member.name} className="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 origin-bottom" referrerPolicy="no-referrer" />
+         </div>
+         <div className="flex-1 flex flex-col border-l border-primary/20 pl-4 py-1 group-hover:border-secondary transition-colors duration-500">
+             <h4 className="font-sans font-bold text-2xl text-primary mb-1">{member.name}</h4>
+             <p className="text-carbon/50 font-sans font-semibold text-[10px] uppercase tracking-[0.15em] mb-4">{member.role}</p>
+             <p className="text-carbon/70 font-sans font-light leading-relaxed text-sm">{member.bio}</p>
+         </div>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="group flex flex-col h-full"
+    >
+       <div className="overflow-hidden aspect-[4/5] w-full max-w-[240px] mb-5 relative bg-white border border-primary/5 group-hover:border-secondary/20 rounded-sm mx-auto transition-colors duration-500">
+           <img src={member.image} alt={member.name} className="w-full h-full object-cover grayscale mix-blend-multiply opacity-70 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 origin-bottom" referrerPolicy="no-referrer" />
+       </div>
+       <div className="flex-1 flex flex-col text-center">
+           <h4 className="font-sans font-bold text-lg text-primary mb-1">{member.name}</h4>
+           <p className="text-carbon/40 font-sans font-semibold text-[9px] uppercase tracking-[0.15em] mb-3">{member.role}</p>
+           <p className="text-carbon/60 font-sans font-light leading-relaxed text-xs max-w-xs mx-auto">{member.bio}</p>
+       </div>
+    </motion.div>
+  );
+};
 
 const Team = () => {
+  const teamData = {
+    leadership: [
+      {
+        name: "Karen Gamarra",
+        role: "CEO & Founder",
+        bio: "Abogada con más de 18 años de experiencia en derecho corporativo, financiero y regulatorio, con trayectoria en el sector público y privado. Ha liderado asuntos vinculados a mercado de valores, compliance, PLAFT, banca y estructuración corporativa, además de desempeñarse como docente universitaria y árbitra en arbitraje comercial.",
+        image: "https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778870973/KarenG_eo2cyd.png"
+      },
+      {
+        name: "Natali Evangelista",
+        role: "Socia",
+        bio: "Ingeniera de minas y socia de Warmi Kapital. Aporta experiencia en gestión contractual y operación del sector minero, con una mirada técnica clave para proyectos vinculados a minería, estructuración y desarrollo empresarial.",
+        image: "https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778870975/Natali_Evangelista_-_Topaz_Gigapixel_escala_2x_qg3uhj.png"
+      }
+    ],
+    consultants: [
+      {
+        name: "Betsy Mori Rojas",
+        role: "Consultora Especialista en Obras por Impuestos",
+        bio: "Especialista en Obras por Impuestos y articulación público-privada. Cuenta con experiencia en estructuración, monitoreo e implementación de proyectos OxI para empresas, entidades públicas y organismos multilaterales.",
+        image: "https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778870943/BetsyM_hj6flc.png"
+      },
+      {
+        name: "Alexi Berrú More",
+        role: "Consultor Especialista en Comunicaciones para Proyectos OxI",
+        bio: "Ingeniero electrónico y de telecomunicaciones con experiencia en diseño, gestión y supervisión de proyectos de inversión pública y Obras por Impuestos en salud, educación y seguridad ciudadana.",
+        image: "https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778870939/Alexi_vsbqbq.png"
+      }
+    ],
+    legal: [
+      {
+        name: "María Belén Cubas Díaz",
+        role: "Equipo Legal",
+        bio: "Estudiante de Derecho en la UPAO, perteneciente al tercio superior y pasante en Warmi Kapital. Brinda soporte en la organización y seguimiento de tareas del área legal.",
+        image: "https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778870943/Belen_h1htt7.jpg"
+      },
+      {
+        name: "Adriana Stefany Tuesta Carrión",
+        role: "Equipo Legal",
+        bio: "Bachiller egresada de la Facultad de Derecho de la UPAO y perteneciente al tercio superior. Acompaña procesos de soporte jurídico y gestión documental dentro del equipo.",
+        image: "https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778870944/Stefany_zno2ce.jpg"
+      }
+    ]
+  };
+
   return (
-    <section id="equipo" className="py-32 bg-white">
+    <section id="equipo" className="py-32 bg-bg-sand relative">
       <div className="container mx-auto px-6">
-        <div className="text-center mb-24">
-          <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-4 block">Nuestro Capital Humano</span>
-          <h2 className="text-4xl md:text-5xl font-display font-medium text-primary mb-6">Talento y Experiencia</h2>
-          <p className="text-carbon/70 text-lg font-sans font-light max-w-2xl mx-auto">
-            Un equipo multidisciplinario enfocado en la excelencia técnica y el acompañamiento estratégico personalizado.
+        <div className="text-center max-w-3xl mx-auto mb-24">
+          <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-4 block">Liderazgo Corporativo</span>
+          <h2 className="text-4xl md:text-5xl font-display font-medium text-primary mb-6">Capital Humano</h2>
+          <p className="text-carbon/70 text-lg font-sans font-light">
+            Un equipo estructurado bajo estándares de firmas globales. Integramos rigor jurídico, visión financiera y experiencia sectorial técnica.
           </p>
         </div>
 
-        {/* Founders / Main Partners */}
-        <div className="grid md:grid-cols-2 gap-16 max-w-4xl mx-auto mb-20 border-b border-primary/10 pb-20">
-          <TeamMember 
-            name="Karen Gamarra" 
-            role="CEO & Founder" 
-            image="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816586/KarenG_ipglgk.png" 
-            size="lg" 
-          />
-          <TeamMember 
-            name="Natali" 
-            role="Socia · Ing. de Minas" 
-            image="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=1974&auto=format&fit=crop" 
-            size="lg" 
-          />
-        </div>
-
-        {/* Support Team */}
-        <div className="mb-20">
-          <h5 className="text-center text-primary font-sans font-medium mb-12 opacity-40 uppercase tracking-[0.3em] text-xs">Asistentes Junior</h5>
-          <div className="grid grid-cols-2 md:grid-cols-2 max-w-2xl mx-auto gap-12">
-            <TeamMember name="Belen" role="Asistente Junior" image="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816584/WhatsApp_Image_2026-05-13_at_8.14.01_PM_1_xcejlh.jpg" />
-            <TeamMember name="Stefani" role="Asistente Junior" image="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816585/WhatsApp_Image_2026-05-13_at_8.13.59_PM_3_hkepw6.jpg" />
+        {/* Leadership */}
+        <div className="mb-24">
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
+            {teamData.leadership.map((member, idx) => (
+              <TeamProfile key={idx} member={member} tier="leadership" />
+            ))}
           </div>
         </div>
 
-        {/* External consultants */}
+        <div className="w-full h-px bg-primary/10 mb-20 max-w-6xl mx-auto"></div>
+
+        {/* Specialist Consultants */}
+        <div className="mb-24">
+           <h3 className="font-display font-medium text-3xl text-primary mb-12 text-center">Consultoría Especializada</h3>
+           <div className="grid md:grid-cols-2 gap-10 lg:gap-16 max-w-5xl mx-auto">
+             {teamData.consultants.map((member, idx) => (
+               <TeamProfile key={idx} member={member} tier="consultant" />
+             ))}
+           </div>
+        </div>
+
+        <div className="w-full max-w-lg mx-auto h-px bg-primary/10 mb-20"></div>
+
+        {/* Legal Team */}
         <div>
-          <h5 className="text-center text-primary font-sans font-medium mb-12 opacity-40 uppercase tracking-[0.3em] text-xs">Equipo de Consultoría</h5>
-          <div className="grid grid-cols-2 md:grid-cols-2 max-w-2xl mx-auto gap-12">
-            <TeamMember name="Betsi" role="Especialista de OxI" image="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816585/BetsyM_jrzhyw.png" />
-            <TeamMember name="Alexi" role="Especialista en OxI" image="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1974&auto=format&fit=crop" />
-          </div>
+           <h3 className="font-display font-medium text-2xl text-primary mb-12 text-center opacity-80">Soporte Legal</h3>
+           <div className="grid md:grid-cols-2 gap-10 max-w-3xl mx-auto">
+              {teamData.legal.map((member, idx) => (
+                <TeamProfile key={idx} member={member} tier="legal" />
+              ))}
+           </div>
         </div>
       </div>
     </section>
