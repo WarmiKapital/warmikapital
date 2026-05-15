@@ -28,7 +28,11 @@ import {
   X,
   Linkedin,
   Instagram,
-  MessageSquare
+  MessageSquare,
+  Building2,
+  LineChart,
+  ShieldAlert,
+  ArrowRight
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -43,8 +47,10 @@ const getWhatsAppUrl = (data?: { name?: string, message?: string }) => {
 };
 
 const WhatsAppFloatingButton = () => (
-  <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 z-50 transition-transform hover:scale-110 shadow-green-500/20">
-     <MessageSquare size={24} />
+  <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 bg-secondary text-primary p-4 rounded-full shadow-lg hover:bg-white hover:text-primary z-50 transition-transform hover:scale-110 shadow-secondary/20">
+     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.487-1.761-1.663-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.571-.012c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
+     </svg>
   </a>
 );
 
@@ -91,8 +97,8 @@ const Navbar = () => {
               {link.name}
             </a>
           ))}
-          <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="bg-secondary text-white px-6 py-2 rounded-sm text-sm font-semibold hover:bg-secondary/90 transition-all shadow-lg shadow-secondary/20">
-            Agenda una consulta
+          <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="bg-secondary text-primary px-6 py-2.5 rounded-sm text-sm font-semibold hover:bg-white transition-all shadow-lg shadow-secondary/20 font-sans tracking-wide">
+            Agenda Ejecutiva
           </a>
         </div>
 
@@ -136,49 +142,57 @@ const Navbar = () => {
 
 const Hero = () => {
   return (
-    <section id="inicio" className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+    <section id="inicio" className="relative min-h-screen flex items-center pt-24 overflow-hidden bg-primary">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
           src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
           alt="Modern Architecture" 
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover opacity-30 grayscale"
           referrerPolicy="no-referrer"
         />
-        <div className="absolute inset-0 bg-primary/80 mix-blend-multiply" />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/60 to-transparent" />
+        <div className="absolute inset-0 bg-primary/90" />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent" />
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-3xl">
+      <div className="container mx-auto px-6 relative z-10 pt-20 pb-32">
+        <div className="max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <h1 className="text-5xl md:text-7xl font-display font-bold text-white leading-tight mb-6">
-              Estudio jurídico, financiero y corporativo con <span className="text-secondary italic font-accent font-normal">visión humana.</span>
+            <span className="text-secondary font-sans font-semibold text-sm uppercase tracking-[0.2em] mb-6 block">
+              Boutique Legal & Financiera
+            </span>
+            <h1 className="text-5xl md:text-7xl font-display font-medium text-white leading-[1.1] mb-8">
+              Estrategia corporativa con <span className="text-secondary italic">visión y rigor.</span>
             </h1>
-            <p className="text-lg md:text-xl text-bg-sand/90 mb-10 max-w-2xl font-light leading-relaxed">
-              Acompañamos a personas y empresas con soluciones estratégicas en derecho, finanzas y gestión corporativa para impulsar decisiones inteligentes, seguras y sostenibles.
+            <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl font-sans font-light leading-relaxed">
+              Warmi Kapital asesora a empresas líderes y ejecutivos en decisiones críticas. Integramos derecho, finanzas y estrategia corporativa para impulsar su crecimiento con seguridad y visión humana.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="bg-secondary text-white px-8 py-4 rounded-sm font-bold flex items-center justify-center gap-2 hover:bg-secondary/90 transition-all group">
-                Agenda una consulta <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
+            <div className="flex flex-col sm:flex-row gap-5">
+              <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="bg-secondary text-primary px-8 py-4 rounded-sm font-sans font-semibold flex items-center justify-center gap-2 hover:bg-white hover:text-primary transition-all duration-300">
+                Agendar Consulta Ejecutiva
               </a>
-              <button className="border border-white/30 text-white px-8 py-4 rounded-sm font-bold hover:bg-white/10 transition-all backdrop-blur-sm">
-                Conoce nuestros servicios
+              <button className="border border-white/20 text-white px-8 py-4 rounded-sm font-sans font-semibold hover:bg-white/5 transition-all duration-300">
+                Conocer la Firma
               </button>
             </div>
           </motion.div>
         </div>
       </div>
 
-      {/* Decorative vertical rail text */}
-      <div className="hidden lg:block absolute right-12 bottom-24 rotate-90 origin-right">
-        <p className="text-secondary tracking-[0.3em] font-display text-[10px] uppercase font-bold whitespace-nowrap opacity-50">
-          Estrategia · Confianza · Resultados
-        </p>
+      {/* Trust bar */}
+      <div className="absolute bottom-0 w-full border-t border-white/10 bg-primary/50 backdrop-blur-md">
+         <div className="container mx-auto px-6 py-6 font-sans">
+             <div className="flex flex-wrap justify-between items-center gap-6 text-sm text-white/60 tracking-wider">
+                 <div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> M&A y Finanzas</div>
+                 <div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> Derecho Corporativo</div>
+                 <div className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> Tributación Estratégica</div>
+                 <div className="flex items-center gap-2 hidden md:flex"><div className="w-1.5 h-1.5 rounded-full bg-secondary"></div> Obras por Impuestos</div>
+             </div>
+         </div>
       </div>
     </section>
   );
@@ -186,54 +200,64 @@ const Hero = () => {
 
 const About = () => {
   return (
-    <section id="nosotros" className="py-24 bg-bg-sand">
+    <section id="nosotros" className="py-32 bg-white relative">
       <div className="container mx-auto px-6">
-        <div className="grid lg:grid-cols-2 gap-20 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="bg-primary text-white p-12 rounded-sm"
-          >
-            <span className="text-secondary font-display font-bold text-xs uppercase tracking-[0.2em] mb-4 block">Karen Gamarra - CEO & Founder</span>
-            <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-8 leading-tight">
-              Construyendo una <span className="text-secondary font-accent italic font-normal">consultora humana</span>, sólida y estratégica para el Norte del país.
-            </h2>
-            <div className="space-y-6 text-white/80 text-lg leading-relaxed">
-              <p>
-                "Mi visión con Warmi Kapital siempre ha sido clara: romper la frialdad del sector legal y corporativo. Creo firmemente que las decisiones más importantes del ser humano y las empresas requieren un acompañamiento técnico de alto nivel, pero profundamente humano."
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-8 mt-12">
-              <div className="border-l-2 border-secondary pl-6">
-                <h4 className="text-2xl font-display font-bold text-white mb-1">+5</h4>
-                <p className="text-sm text-white/60 uppercase tracking-wider font-bold">Años de Criterio</p>
-              </div>
-              <div className="border-l-2 border-secondary pl-6">
-                <h4 className="text-2xl font-display font-bold text-white mb-1">100%</h4>
-                <p className="text-sm text-white/60 uppercase tracking-wider font-bold">Enfoque Humano</p>
-              </div>
-            </div>
-          </motion.div>
-
+        <div className="grid lg:grid-cols-12 gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="relative"
+            className="lg:col-span-5 relative"
           >
-            <div className="aspect-[3/4] rounded-sm overflow-hidden shadow-2xl relative z-10">
+            <div className="aspect-[3/4] rounded-sm overflow-hidden shadow-2xl relative z-10 w-full max-w-md mx-auto lg:mx-0">
               <img 
                 src="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816586/KarenG_ipglgk.png" 
-                alt="Karen Gamarra" 
+                alt="Karen Gamarra - CEO & Founder" 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />
             </div>
-            <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-secondary z-0 rounded-sm opacity-20" />
+            <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-primary z-0 rounded-sm" />
+            <div className="absolute -top-8 -right-8 w-48 h-48 bg-secondary/20 z-0 rounded-sm" />
+            
+            {/* Signature Badge */}
+            <div className="absolute bottom-10 -right-6 lg:-right-12 z-20 bg-white p-6 shadow-xl w-64 border-l-4 border-secondary hidden sm:block">
+               <span className="block font-display font-medium text-lg text-primary">Karen Gamarra</span>
+               <span className="block font-sans text-xs uppercase tracking-widest text-carbon/60 mt-1">CEO & Founder</span>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="lg:col-span-7 lg:pl-10 text-primary"
+          >
+            <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-4 block">Liderazgo & Visión</span>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium mb-8 leading-[1.1] text-primary">
+              Construyendo la <span className="text-secondary italic">consultora del futuro</span> para el norte del país.
+            </h2>
+            <div className="space-y-6 text-carbon/80 text-lg leading-relaxed font-sans font-light">
+              <p>
+                "Mi visión con Warmi Kapital siempre ha sido clara: transformar el paradigma de la consultoría tradicional. El sector legal y financiero a menudo peca de ser frío, distante y poco empático con la realidad operativa del empresario."
+              </p>
+              <p>
+                "Creé esta firma para que las empresas y líderes del mid-market peruano, especialmente en el norte del país, tengan acceso a una estructuración técnica de nivel corporativo global, pero entregada con la cercanía, la claridad y el trato humano que las decisiones críticas exigen. No somos proveedores; somos sus socios estratégicos."
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-8 mt-12 border-t border-primary/10 pt-10">
+              <div>
+                <h4 className="text-4xl font-display font-medium text-primary mb-2">+15</h4>
+                <p className="text-xs text-carbon/50 uppercase tracking-widest font-semibold font-sans">Años de Expertise</p>
+              </div>
+              <div>
+                <h4 className="text-4xl font-display font-medium text-primary mb-2">100%</h4>
+                <p className="text-xs text-carbon/50 uppercase tracking-widest font-semibold font-sans">Enfoque Humano</p>
+              </div>
+            </div>
           </motion.div>
         </div>
       </div>
@@ -244,45 +268,45 @@ const About = () => {
 const Services = () => {
   const services = [
     {
-      title: "Derecho Financiero",
-      description: "Asesoría para decisiones, operaciones y estructuras con impacto económico y legal estratégico.",
-      icon: <TrendingUp className="text-secondary" size={32} />,
+      title: "Derecho Corporativo y M&A",
+      description: "Estructuración de sociedades, fusiones, adquisiciones y gobierno corporativo para blindar el valor de su empresa.",
+      icon: <Building2 className="text-secondary" size={32} />,
     },
     {
-      title: "Derecho Tributario",
-      description: "Prevención, orden y estrategia integral frente a obligaciones y contingencias fiscales.",
+      title: "Estrategia Tributaria",
+      description: "Planeamiento fiscal sofisticado, defensa ante auditorías y optimización de cargas impositivas con rigor legal.",
       icon: <ShieldCheck className="text-secondary" size={32} />,
     },
     {
-      title: "Derecho Comercial",
-      description: "Soporte legal robusto para contratos, negocios y el crecimiento sostenible de tu empresa.",
-      icon: <Briefcase className="text-secondary" size={32} />,
+      title: "Finanzas Estructurales",
+      description: "Acompañamiento en financiamientos, reestructuración de deuda y evaluación de proyectos de inversión.",
+      icon: <LineChart className="text-secondary" size={32} />,
     },
     {
-      title: "Derecho Minero",
-      description: "Acompañamiento jurídico especializado y técnico en el sector minero de alto nivel.",
+      title: "Derecho Minero y Energía",
+      description: "Asesoría altamente especializada para la obtención de concesiones, permisos y negociación de contratos.",
       icon: <Pickaxe className="text-secondary" size={32} />,
     },
     {
-      title: "Marcas y Patentes",
-      description: "Protección integral de activos intangibles y propiedad intelectual en el mercado global.",
-      icon: <Award className="text-secondary" size={32} />,
+      title: "Propiedad Intelectual",
+      description: "Gestión estratégica y protección global de activos intangibles, marcas, patentes y derechos de autor.",
+      icon: <ShieldAlert className="text-secondary" size={32} />,
     },
     {
-      title: "OxI (Obras por Impuestos)",
-      description: "Estructuración y asesoría en proyectos de impacto social con enfoque estratégico y fiscal.",
+      title: "Obras por Impuestos (OxI)",
+      description: "Acompañamiento técnico y legal de extremo a extremo para la ejecución de proyectos de alto impacto social.",
       icon: <FileCheck className="text-secondary" size={32} />,
     },
   ];
 
   return (
-    <section id="servicios" className="py-24 bg-white">
+    <section id="servicios" className="py-32 bg-bg-sand">
       <div className="container mx-auto px-6">
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <span className="text-secondary font-display font-bold text-xs uppercase tracking-[0.2em] mb-4 block">Especialidades</span>
-          <h2 className="text-4xl md:text-5xl font-display font-bold text-primary mb-6">Nuestros Servicios</h2>
-          <p className="text-carbon/60 text-lg">
-            Soluciones integradas para los desafíos más complejos del entorno corporativo actual.
+          <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-4 block">Áreas de Práctica</span>
+          <h2 className="text-4xl md:text-5xl font-display font-medium text-primary mb-6">Expertise Integral</h2>
+          <p className="text-carbon/70 text-lg font-sans font-light">
+            Soluciones estructuradas para los desafíos más complejos del entorno corporativo y financiero.
           </p>
         </div>
 
@@ -294,18 +318,15 @@ const Services = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
-              className="bg-white border border-primary/10 p-8 rounded-sm shadow-sm group hover:bg-primary transition-colors duration-500"
+              className="bg-white border-t-2 border-transparent p-10 shadow-sm hover:shadow-xl hover:border-secondary transition-all duration-300 group flex flex-col h-full"
             >
-              <div className="mb-6 bg-primary/5 w-16 h-16 flex items-center justify-center rounded-sm group-hover:bg-white/10 transition-colors">
+              <div className="mb-6 mb-auto">
                 {item.icon}
               </div>
-              <h3 className="text-xl font-display font-bold mb-4 text-primary group-hover:text-white transition-colors">{item.title}</h3>
-              <p className="text-carbon/60 group-hover:text-white/90 leading-relaxed transition-colors">
+              <h3 className="text-2xl font-display font-medium mb-4 text-primary">{item.title}</h3>
+              <p className="text-carbon/60 leading-relaxed font-sans font-light text-sm">
                 {item.description}
               </p>
-              <div className="mt-8 flex items-center gap-2 text-secondary font-bold text-xs uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all">
-                Saber más <ChevronRight size={14} />
-              </div>
             </motion.div>
           ))}
         </div>
@@ -315,48 +336,65 @@ const Services = () => {
 };
 
 const Differentiator = () => {
+  const points = [
+    {
+      title: "Rigor Corporativo, Trato Local",
+      desc: "Metodologías de firmas globales adaptadas a la realidad del mid-market y empresas peruanas.",
+      icon: <Building2 className="text-secondary" size={24} />
+    },
+    {
+      title: "Intelectualidad Financiera",
+      desc: "No solo redactamos contratos; entendemos los balances, los márgenes y la estructura de capital detrás de cada decisión.",
+      icon: <LineChart className="text-secondary" size={24} />
+    },
+    {
+      title: "Visión Preventiva Total",
+      desc: "Gestión anticipada de contingencias. Solucionamos el problema antes de que afecte la operatividad o reputación de su empresa.",
+      icon: <ShieldAlert className="text-secondary" size={24} />
+    },
+    {
+      title: "Partnership Auténtico",
+      desc: "Nos involucramos en su negocio. Somos asesores que responden claramente y se sientan en su mesa de directorio.",
+      icon: <Users className="text-secondary" size={24} />
+    }
+  ];
+
   return (
-    <section className="py-0 overflow-hidden relative min-h-[500px] flex items-center">
-      <div className="absolute inset-0 z-0">
-         <img 
-            src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2070&auto=format&fit=crop" 
-            alt="Estrategia financiera" 
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-         />
-         <div className="absolute inset-0 bg-primary/90" />
-      </div>
-      
-      <div className="container mx-auto px-6 relative z-10 py-24">
-        <div className="grid lg:grid-cols-2 gap-20 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-white"
-          >
-            <span className="text-secondary font-display font-bold text-xs uppercase tracking-[0.2em] mb-4 block">Nuestra Fórmula</span>
-            <h2 className="text-4xl md:text-6xl font-display font-bold mb-8">
-              Legal + Financiero = Decisiones Inteligentes
+    <section className="py-32 bg-primary text-white border-t border-white/5">
+      <div className="container mx-auto px-6">
+        <div className="grid lg:grid-cols-12 gap-16">
+          <div className="lg:col-span-5">
+            <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-4 block">El Estándar Warmi</span>
+            <h2 className="text-4xl md:text-5xl font-display font-medium text-white mb-8 leading-[1.2]">
+              ¿Por qué las empresas nos confían sus decisiones <span className="text-secondary italic">críticas</span>?
             </h2>
-            <p className="text-xl text-white/70 leading-relaxed mb-8">
-              Nuestro valor diferencial radica en la integración. No miramos el derecho como una isla, sino como un engranaje fundamental de tu estructura financiera y corporativa.
+            <p className="text-lg text-white/70 font-sans font-light leading-relaxed mb-10">
+              Transformamos la complejidad legal y tributaria en ventajas competitivas claras. Nuestro modelo elimina la burocracia tradicional de los grandes estudios.
             </p>
-            <ul className="space-y-4">
-              {[
-                "Visión 360° de contingencias y oportunidades.",
-                "Estructuras legales con eficiencia económica.",
-                "Tratamiento técnico de alta especialidad.",
-                "Claridad y acompañamiento en cada etapa."
-              ].map((text) => (
-                <li key={text} className="flex items-center gap-4 text-white/90">
-                  <div className="w-2 h-2 bg-secondary rounded-full" />
-                  {text}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
+            <a href="https://wa.me/51932340282?text=Hola,%20me%20gustar%C3%ADa%20agendar%20una%20consulta%20en%20Warmi%20Kapital." target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 text-secondary font-sans font-semibold uppercase tracking-wider text-sm hover:text-white transition-colors">
+              Hablemos de negocios <ArrowRight size={16} />
+            </a>
+          </div>
+          
+          <div className="lg:col-span-7 grid sm:grid-cols-2 gap-x-8 gap-y-12">
+            {points.map((pt, idx) => (
+              <motion.div 
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+              >
+                <div className="mb-6 bg-white/5 w-12 h-12 flex items-center justify-center rounded-sm">
+                  {pt.icon}
+                </div>
+                <h3 className="text-xl font-display font-medium text-white mb-3">{pt.title}</h3>
+                <p className="text-white/60 font-sans font-light leading-relaxed text-sm">
+                  {pt.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -370,33 +408,35 @@ const TeamMember = ({ name, role, image, size = "md" }: { name: string, role: st
     viewport={{ once: true }}
     className="group"
   >
-    <div className={`overflow-hidden rounded-sm mb-6 ${size === "lg" ? "aspect-[4/5]" : "aspect-square"}`}>
+    <div className={`overflow-hidden rounded-sm mb-6 ${size === "lg" ? "aspect-[4/5]" : "aspect-[3/4]"}`}>
       <img 
         src={image} 
         alt={name} 
-        className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+        className="w-full h-full object-cover grayscale mix-blend-multiply opacity-90 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
         referrerPolicy="no-referrer"
       />
     </div>
-    <h4 className={`font-display font-bold text-primary ${size === "lg" ? "text-2xl" : "text-xl"} mb-1`}>{name}</h4>
-    <p className="text-secondary font-medium tracking-wide text-sm">{role}</p>
+    <div className="border-l-2 border-secondary pl-4">
+      <h4 className={`font-display font-medium text-primary ${size === "lg" ? "text-2xl" : "text-xl"} mb-1`}>{name}</h4>
+      <p className="text-carbon/60 font-sans text-xs uppercase tracking-widest">{role}</p>
+    </div>
   </motion.div>
 );
 
 const Team = () => {
   return (
-    <section id="equipo" className="py-24 bg-bg-sand">
+    <section id="equipo" className="py-32 bg-white">
       <div className="container mx-auto px-6">
         <div className="text-center mb-24">
-          <span className="text-secondary font-display font-bold text-xs uppercase tracking-[0.2em] mb-4 block">Nuestro Capital Humano</span>
-          <h2 className="text-4xl md:text-5xl font-display font-bold text-primary mb-6">Talento y Experiencia</h2>
-          <p className="text-carbon/60 text-lg max-w-2xl mx-auto">
-            Un equipo multidisciplinario enfocado en la excelencia y el acompañamiento personalizado.
+          <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-4 block">Nuestro Capital Humano</span>
+          <h2 className="text-4xl md:text-5xl font-display font-medium text-primary mb-6">Talento y Experiencia</h2>
+          <p className="text-carbon/70 text-lg font-sans font-light max-w-2xl mx-auto">
+            Un equipo multidisciplinario enfocado en la excelencia técnica y el acompañamiento estratégico personalizado.
           </p>
         </div>
 
         {/* Founders / Main Partners */}
-        <div className="grid md:grid-cols-2 gap-16 max-w-4xl mx-auto mb-20 border-b border-carbon/5 pb-20">
+        <div className="grid md:grid-cols-2 gap-16 max-w-4xl mx-auto mb-20 border-b border-primary/10 pb-20">
           <TeamMember 
             name="Karen Gamarra" 
             role="CEO & Founder" 
@@ -413,7 +453,7 @@ const Team = () => {
 
         {/* Support Team */}
         <div className="mb-20">
-          <h5 className="text-center text-primary font-display font-bold mb-12 opacity-50 uppercase tracking-[0.3em] text-xs">Asistentes Junior</h5>
+          <h5 className="text-center text-primary font-sans font-medium mb-12 opacity-40 uppercase tracking-[0.3em] text-xs">Asistentes Junior</h5>
           <div className="grid grid-cols-2 md:grid-cols-2 max-w-2xl mx-auto gap-12">
             <TeamMember name="Belen" role="Asistente Junior" image="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816584/WhatsApp_Image_2026-05-13_at_8.14.01_PM_1_xcejlh.jpg" />
             <TeamMember name="Stefani" role="Asistente Junior" image="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816585/WhatsApp_Image_2026-05-13_at_8.13.59_PM_3_hkepw6.jpg" />
@@ -422,10 +462,10 @@ const Team = () => {
 
         {/* External consultants */}
         <div>
-          <h5 className="text-center text-primary font-display font-bold mb-12 opacity-50 uppercase tracking-[0.3em] text-xs">Equipo de consultoría</h5>
+          <h5 className="text-center text-primary font-sans font-medium mb-12 opacity-40 uppercase tracking-[0.3em] text-xs">Equipo de Consultoría</h5>
           <div className="grid grid-cols-2 md:grid-cols-2 max-w-2xl mx-auto gap-12">
             <TeamMember name="Betsi" role="Especialista de OxI" image="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816585/BetsyM_jrzhyw.png" />
-            <TeamMember name="Alexi" role="Especialista en OxI" image="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop" />
+            <TeamMember name="Alexi" role="Especialista en OxI" image="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1974&auto=format&fit=crop" />
           </div>
         </div>
       </div>
@@ -534,8 +574,8 @@ const Contact = () => {
                   <label className="block text-xs font-bold uppercase tracking-wider text-primary/60 mb-2">Mensaje</label>
                   <textarea rows={4} required className="w-full border-b border-primary/10 py-3 focus:outline-none focus:border-secondary transition-colors resize-none" placeholder="¿En qué podemos ayudarte?" onChange={(e) => setFormData({...formData, message: e.target.value})}></textarea>
                 </div>
-                <button type="submit" className="w-full bg-secondary text-white py-4 rounded-sm font-bold flex items-center justify-center gap-2 hover:bg-secondary/90 transition-all shadow-lg shadow-secondary/20 uppercase tracking-[0.2em] text-sm mt-8">
-                  Agendar asesoría <Calendar size={18} />
+                <button type="submit" className="w-full bg-secondary text-primary py-4 rounded-sm font-semibold flex items-center justify-center gap-2 hover:bg-primary hover:text-white transition-all shadow-lg shadow-secondary/20 uppercase tracking-[0.2em] text-sm mt-8 font-sans">
+                  Solicitar Asesoría Ejecutiva <ArrowRight size={18} />
                 </button>
               </form>
             </div>
@@ -550,7 +590,7 @@ const Footer = () => {
   return (
     <footer className="bg-primary pt-20 pb-10 border-t border-white/5">
       <div className="container mx-auto px-6">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20 text-white">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12 mb-20 text-white">
           <div className="col-span-1 lg:col-span-1">
             <div className="flex items-center gap-2 mb-8">
               <img 
@@ -587,11 +627,6 @@ const Footer = () => {
               <a href="#servicios" className="hover:text-white transition-colors">Propiedad Intelectual</a>
               <a href="#servicios" className="hover:text-white transition-colors">Obras por Impuestos</a>
             </div>
-          </div>
-
-          <div className="col-span-1">
-            <h5 className="font-display font-bold text-secondary mb-8 uppercase tracking-widest text-xs">Legal</h5>
-            {/* Removed internal legal links */}
           </div>
         </div>
 

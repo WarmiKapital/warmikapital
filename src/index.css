@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800&family=Playfair+Display:ital,wght@1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -9,22 +9,18 @@
   --color-steel: #3A6BC9;
 
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Montserrat", sans-serif;
+  --font-display: "Playfair Display", serif;
   --font-accent: "Playfair Display", serif;
 }
 
 @layer base {
   body {
-    @apply bg-bg-sand text-carbon font-sans;
+    @apply bg-bg-sand text-carbon font-sans antialiased;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display;
+    @apply font-display tracking-tight text-primary;
   }
-}
-
-.glide-in {
-  @apply transition-all duration-700 ease-out;
 }
 
 .text-gold {
@@ -37,8 +33,4 @@
 
 .border-gold {
   @apply border-secondary;
-}
-
-.card-premium {
-  @apply bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300 p-8 rounded-sm;
 }
