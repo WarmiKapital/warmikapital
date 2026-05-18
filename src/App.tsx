@@ -450,10 +450,23 @@ type TeamMemberData = {
   name: string;
   role: string;
   bio: string;
-  image: string;
+  image?: string;
+  initials?: string;
+  credentials?: string;
 };
 
-const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadership' | 'consultant' | 'legal' }) => {
+const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadership' | 'consultant' | 'public_procurement' | 'legal' }) => {
+  const renderImageOrInitials = (extraImageClasses: string = "", extraInitialsClasses: string = "") => {
+    if (member.image) {
+      return <img src={member.image} alt={member.name} className={`w-full h-full object-cover grayscale mix-blend-multiply opacity-90 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 origin-bottom ${extraImageClasses}`} referrerPolicy="no-referrer" />;
+    }
+    return (
+      <div className={`w-full h-full flex items-center justify-center bg-primary/5 text-primary/40 font-display font-medium mix-blend-multiply group-hover:bg-secondary/10 group-hover:text-secondary/80 transition-colors duration-500 ${extraInitialsClasses}`}>
+        {member.initials}
+      </div>
+    );
+  };
+
   if (tier === 'leadership') {
     return (
       <motion.div 
@@ -463,12 +476,35 @@ const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadersh
         className="group flex flex-col h-full"
       >
          <div className="overflow-hidden aspect-[4/5] w-full mb-8 relative bg-white border border-primary/5 group-hover:border-secondary/30 transition-colors duration-500 rounded-sm">
-             <img src={member.image} alt={member.name} className="w-full h-full object-cover grayscale mix-blend-multiply opacity-90 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 origin-bottom" referrerPolicy="no-referrer" />
+             {renderImageOrInitials()}
          </div>
          <div className="flex-1 flex flex-col border-l-2 border-secondary pl-5 py-1">
              <h4 className="font-sans font-bold text-3xl text-primary mb-1">{member.name}</h4>
              <p className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-5">{member.role}</p>
              <p className="text-carbon/80 font-sans font-light leading-relaxed text-base">{member.bio}</p>
+         </div>
+      </motion.div>
+    );
+  }
+
+  if (tier === 'public_procurement') {
+    return (
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="group flex flex-col h-full"
+      >
+         <div className="overflow-hidden aspect-[4/5] w-full mb-6 relative bg-white border border-primary/5 group-hover:border-primary/20 transition-colors duration-500 rounded-sm">
+             {renderImageOrInitials('opacity-80', 'text-4xl lg:text-6xl')}
+         </div>
+         <div className="flex-1 flex flex-col border-l border-primary/20 pl-5 py-1 group-hover:border-primary/60 transition-colors duration-500">
+             <h4 className="font-sans font-bold text-2xl lg:text-3xl text-primary mb-1">{member.name}</h4>
+             <p className="text-carbon/60 font-sans font-semibold text-[10px] uppercase tracking-[0.15em] mb-2">{member.role}</p>
+             {member.credentials && (
+                <p className="text-secondary font-sans font-semibold text-[9px] uppercase tracking-[0.2em] mb-5 font-variant-small-caps">{member.credentials.split('·').join(' · ')}</p>
+             )}
+             <p className="text-carbon/80 font-sans font-light leading-relaxed text-sm">{member.bio}</p>
          </div>
       </motion.div>
     );
@@ -483,7 +519,7 @@ const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadersh
         className="group flex flex-col h-full"
       >
          <div className="overflow-hidden aspect-[4/5] w-full mb-6 relative bg-white border border-primary/5 group-hover:border-secondary/20 transition-colors duration-500 rounded-sm">
-             <img src={member.image} alt={member.name} className="w-full h-full object-cover grayscale mix-blend-multiply opacity-80 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 origin-bottom" referrerPolicy="no-referrer" />
+             {renderImageOrInitials('opacity-80')}
          </div>
          <div className="flex-1 flex flex-col border-l border-primary/20 pl-4 py-1 group-hover:border-secondary transition-colors duration-500">
              <h4 className="font-sans font-bold text-2xl text-primary mb-1">{member.name}</h4>
@@ -502,7 +538,7 @@ const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadersh
       className="group flex flex-col h-full"
     >
        <div className="overflow-hidden aspect-[4/5] w-full max-w-[240px] mb-5 relative bg-white border border-primary/5 group-hover:border-secondary/20 rounded-sm mx-auto transition-colors duration-500">
-           <img src={member.image} alt={member.name} className="w-full h-full object-cover grayscale mix-blend-multiply opacity-70 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 origin-bottom" referrerPolicy="no-referrer" />
+           {renderImageOrInitials('opacity-70')}
        </div>
        <div className="flex-1 flex flex-col text-center">
            <h4 className="font-sans font-bold text-lg text-primary mb-1">{member.name}</h4>
@@ -541,6 +577,24 @@ const Team = () => {
         role: "Consultor Especialista en Comunicaciones para Proyectos OxI",
         bio: "Ingeniero electrónico y de telecomunicaciones con experiencia en diseño, gestión y supervisión de proyectos de inversión pública y Obras por Impuestos en salud, educación y seguridad ciudadana.",
         image: "https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778870939/Alexi_vsbqbq.png"
+      }
+    ],
+    publicProcurement: [
+      {
+        name: "Juan Miguel Rojas Ascón",
+        role: "Jefe del Área de Licitaciones y Contrataciones con el Estado",
+        credentials: "Árbitro RNA – OSCE · Máster en Contratación Pública, Castilla La Mancha",
+        initials: "JR",
+        image: "https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1779120447/Juan_Miguel_Rojas_Asc%C3%B3n_z4yriz.png",
+        bio: "Abogado especializado en contratación pública, derecho de la construcción y arbitraje de infraestructura. Máster en Contratación Pública por la Universidad de Castilla La Mancha – España y maestrías en Derecho Civil y Gerencia de Proyectos. Ex abogado de la Dirección de Arbitraje Administrativo del OSCE. Árbitro activo en la CCL, PUCP, Colegio de Ingenieros y demás centros arbitrales del Perú. Especialista en contratos FIDIC y NEC. Docente en la Universidad ESAN y la UNHEVAL."
+      },
+      {
+        name: "Roberto Lara Bravo",
+        role: "Consultor Especialista en Contrataciones con el Estado y Derecho de la Construcción",
+        credentials: "Gerente de Contratos · Maestría MDI CENTRUM–PUCP",
+        initials: "RL",
+        image: "https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1779120448/Roberto_Lara_Bravo_kwnx9e.png",
+        bio: "Abogado colegiado (UNMSM) con más de 15 años de experiencia en contratación pública, administración de contratos de infraestructura y resolución de controversias. Maestría en Dirección y Gestión de Empresas Constructoras e Inmobiliarias – CENTRUM PUCP. Ha liderado áreas legales en proyectos de infraestructura que superan los 1,700 millones de soles bajo contratos FIDIC, NEC, Ley de Contrataciones del Estado y Obras por Impuestos."
       }
     ],
     legal: [
@@ -588,6 +642,25 @@ const Team = () => {
              {teamData.consultants.map((member, idx) => (
                <TeamProfile key={idx} member={member} tier="consultant" />
              ))}
+           </div>
+        </div>
+
+        <div className="w-full max-w-lg mx-auto h-px bg-primary/10 mb-20"></div>
+
+        {/* Public Procurement Area */}
+        <div className="mb-24">
+           <div className="text-center max-w-3xl mx-auto mb-16">
+             <h3 className="font-display font-medium text-4xl text-primary mb-4 tracking-tight">Área de Licitaciones y Contrataciones con el Estado</h3>
+             <p className="text-carbon/70 text-base font-sans font-light">Especialistas en contratación pública, administración de contratos de obra e infraestructura, y solución de controversias arbitrales con el Estado.</p>
+           </div>
+           
+           <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+             <div className="lg:col-span-7">
+                <TeamProfile member={teamData.publicProcurement[0]} tier="public_procurement" />
+             </div>
+             <div className="lg:col-span-5">
+                <TeamProfile member={teamData.publicProcurement[1]} tier="public_procurement" />
+             </div>
            </div>
         </div>
 
@@ -651,7 +724,7 @@ const Contact = () => {
           <div className="grid lg:grid-cols-2">
              <div className="p-12 md:p-20 text-white flex flex-col justify-center">
               <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-6 block">Diagnóstico Inicial</span>
-              <h2 className="text-4xl md:text-5xl font-display font-medium mb-8 tracking-tight leading-[1.1]">
+              <h2 className="text-4xl md:text-5xl font-display font-medium mb-8 tracking-tight leading-[1.1] text-white">
                 Hablemos de tu siguiente <span className="text-secondary italic">decisión crítica.</span>
               </h2>
               <p className="text-white/60 text-lg mb-16 font-light leading-relaxed max-w-md">
