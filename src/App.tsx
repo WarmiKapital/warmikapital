@@ -220,7 +220,7 @@ const About = () => {
           >
             <div className="aspect-[3/4] rounded-sm overflow-hidden shadow-2xl relative z-10 w-full max-w-md mx-auto lg:mx-0">
               <img 
-                src="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816586/KarenG_ipglgk.png" 
+                src="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778870973/KarenG_eo2cyd.png" 
                 alt="Karen Gamarra - CEO & Founder" 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
