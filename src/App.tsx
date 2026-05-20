@@ -577,6 +577,12 @@ const Team = () => {
         role: "Consultor Especialista en Comunicaciones para Proyectos OxI",
         bio: "Ingeniero electrónico y de telecomunicaciones con experiencia en diseño, gestión y supervisión de proyectos de inversión pública y Obras por Impuestos en salud, educación y seguridad ciudadana.",
         image: "https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778870939/Alexi_vsbqbq.png"
+      },
+      {
+        name: "Neimy Hernández Ortiz",
+        role: "Consultora en gestión operativa, logística y seguridad ocupacional",
+        bio: "Ingeniera Industrial colegiada y habilitada, con formación en sistemas integrados de gestión, logística, compras y seguridad ocupacional. Aporta experiencia en procesos operativos, mejora continua y gestión de riesgos laborales, con enfoque en orden, control y eficiencia para proyectos empresariales e industriales.",
+        image: "https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1779301825/Neymi_zs2tyc.png"
       }
     ],
     publicProcurement: [
@@ -638,7 +644,7 @@ const Team = () => {
         {/* Specialist Consultants */}
         <div className="mb-24">
            <h3 className="font-display font-medium text-3xl text-primary mb-12 text-center">Consultoría Especializada</h3>
-           <div className="grid md:grid-cols-2 gap-10 lg:gap-16 max-w-5xl mx-auto">
+           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12 max-w-6xl mx-auto">
              {teamData.consultants.map((member, idx) => (
                <TeamProfile key={idx} member={member} tier="consultant" />
              ))}
