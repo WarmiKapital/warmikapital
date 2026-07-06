@@ -51,13 +51,108 @@ const getWhatsAppUrl = (data?: { name?: string, email?: string, message?: string
     return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 };
 
-const WhatsAppFloatingButton = () => (
-  <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="fixed bottom-6 right-6 bg-secondary text-primary p-4 rounded-full shadow-lg hover:bg-white hover:text-primary z-50 transition-transform hover:scale-110 shadow-secondary/20">
-     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.487-1.761-1.663-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.571-.012c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
-     </svg>
-  </a>
+// Sound and Animation helpers
+const playPremiumPop = () => {
+  try {
+    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+    
+    osc.type = "sine";
+    // Warm organic UI bubble-pop: start mid-high (520Hz) and sweep down to 80Hz very rapidly
+    osc.frequency.setValueAtTime(520, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.08);
+    
+    gainNode.gain.setValueAtTime(0.08, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+    
+    osc.connect(gainNode);
+    gainNode.connect(ctx.destination);
+    
+    osc.start();
+    osc.stop(ctx.currentTime + 0.11);
+  } catch (error) {
+    // Elegant ignore if blocked
+  }
+};
+
+const useReducedMotion = () => {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReduced(media.matches);
+    const listener = (e: MediaQueryListEvent) => setReduced(e.matches);
+    media.addEventListener('change', listener);
+    return () => media.removeEventListener('change', listener);
+  }, []);
+  return reduced;
+};
+
+const ScrollProgressBar = () => {
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalScroll > 0) {
+        setScrollProgress((window.scrollY / totalScroll) * 100);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div className="fixed top-0 left-0 w-full h-[3px] z-[100] bg-transparent pointer-events-none">
+      <div 
+        className="h-full bg-secondary transition-all duration-100 ease-out"
+        style={{ width: `${scrollProgress}%` }}
+      />
+    </div>
+  );
+};
+
+const ElegantDivider = () => (
+  <div className="flex items-center justify-center my-24 opacity-30 max-w-lg mx-auto select-none pointer-events-none">
+    <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-secondary"></div>
+    <div className="w-1.5 h-1.5 rotate-45 border border-secondary mx-4 bg-transparent"></div>
+    <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-secondary"></div>
+  </div>
 );
+
+const WhatsAppFloatingButton = () => {
+  return (
+    <motion.a 
+      href={getWhatsAppUrl()} 
+      target="_blank" 
+      rel="noopener noreferrer" 
+      onClick={playPremiumPop}
+      className="fixed bottom-6 right-6 bg-secondary text-primary p-4 rounded-full shadow-lg z-50 transition-all shadow-secondary/20 hover:bg-white hover:text-primary cursor-pointer"
+      animate={{
+        scale: [1, 1.06, 1],
+        boxShadow: [
+          "0 10px 25px -5px rgba(181, 160, 114, 0.4)",
+          "0 10px 25px 12px rgba(181, 160, 114, 0.15)",
+          "0 10px 25px -5px rgba(181, 160, 114, 0.4)"
+        ]
+      }}
+      transition={{
+        repeat: Infinity,
+        repeatDelay: 5,
+        duration: 2.5,
+        ease: "easeInOut"
+      }}
+      whileHover={{ scale: 1.15, transition: { duration: 0.2 } }}
+      whileTap={{ scale: 0.95 }}
+    >
+       <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.888-.788-1.487-1.761-1.663-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.571-.012c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
+       </svg>
+    </motion.a>
+  );
+};
 
 // --- Components ---
 
@@ -80,113 +175,207 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? "bg-white/90 backdrop-blur-md shadow-sm py-4" : "bg-transparent py-6"}`}>
-      <div className="container mx-auto px-6 flex justify-between items-center">
-        <a href="#inicio" className="flex items-center gap-2">
-          <img 
-            src="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816751/Recurso_9_hkq6bi.png" 
-            alt="Warmi Kapital Logo" 
-            className={`h-12 md:h-16 w-auto transition-all ${isScrolled ? "brightness-100" : "md:brightness-0 md:invert"}`}
-            referrerPolicy="no-referrer"
-          />
-        </a>
-
-        {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <a 
-              key={link.name} 
-              href={link.href} 
-              className={`text-sm font-medium transition-colors hover:text-secondary ${isScrolled ? "text-carbon" : "text-white"}`}
-            >
-              {link.name}
-            </a>
-          ))}
-          <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="bg-secondary text-primary px-6 py-2.5 rounded-sm text-sm font-semibold hover:bg-white transition-all shadow-lg shadow-secondary/20 font-sans tracking-wide">
-            Agenda Ejecutiva
+    <>
+      <ScrollProgressBar />
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? "bg-white/95 backdrop-blur-md shadow-sm py-4" : "bg-transparent py-6"}`}>
+        <div className="container mx-auto px-6 flex justify-between items-center">
+          <a href="#inicio" className="flex items-center gap-2 transition-transform active:scale-95 duration-200">
+            <img 
+              src="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816751/Recurso_9_hkq6bi.png" 
+              alt="Warmi Kapital Logo" 
+              className={`h-12 md:h-16 w-auto transition-all ${isScrolled ? "brightness-100" : "md:brightness-0 md:invert"}`}
+              referrerPolicy="no-referrer"
+            />
           </a>
-        </div>
 
-        {/* Mobile Toggle */}
-        <button 
-          className="md:hidden text-primary"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 w-full bg-white shadow-xl py-8 px-6 flex flex-col gap-6 md:hidden"
-          >
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <a 
                 key={link.name} 
                 href={link.href} 
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-lg font-medium text-carbon hover:text-secondary"
+                className={`text-sm font-medium transition-colors relative py-1.5 group ${isScrolled ? "text-carbon" : "text-white"}`}
               >
                 {link.name}
+                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-secondary transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
-              <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="bg-secondary text-white py-4 rounded-sm font-semibold text-center">
-              Agenda una consulta
-            </a>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+            <motion.a 
+              href={getWhatsAppUrl()} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              onClick={playPremiumPop}
+              whileHover={{ scale: 1.05, y: -1, boxShadow: "0 10px 20px -5px rgba(181, 160, 114, 0.4)" }}
+              whileTap={{ scale: 0.98 }}
+              className="bg-secondary text-primary px-6 py-2.5 rounded-sm text-sm font-semibold hover:bg-white transition-all shadow-lg shadow-secondary/20 font-sans tracking-wide cursor-pointer"
+            >
+              Agenda Ejecutiva
+            </motion.a>
+          </div>
+
+          {/* Mobile Toggle */}
+          <button 
+            className="md:hidden text-primary transition-transform active:scale-90"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="absolute top-full left-0 w-full bg-white shadow-xl py-8 px-6 flex flex-col gap-6 md:hidden"
+            >
+              {navLinks.map((link) => (
+                <a 
+                  key={link.name} 
+                  href={link.href} 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="text-lg font-medium text-carbon hover:text-secondary py-1 border-b border-gray-50 transition-colors"
+                >
+                  {link.name}
+                </a>
+              ))}
+              <a 
+                href={getWhatsAppUrl()} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                onClick={playPremiumPop}
+                className="bg-secondary text-white py-4 rounded-sm font-semibold text-center transition-transform active:scale-95 duration-150"
+              >
+                Agenda una consulta
+              </a>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+    </>
   );
 };
 
 const Hero = () => {
+  const reduced = useReducedMotion();
+
+  const containerVariants: any = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
+      }
+    }
+  };
+
+  const itemVariants: any = {
+    hidden: { 
+      opacity: 0, 
+      y: reduced ? 0 : 25, 
+      filter: reduced ? "none" : "blur(4px)" 
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      filter: "none",
+      transition: { duration: 0.9, ease: "easeOut" } 
+    }
+  };
+
   return (
     <section id="inicio" className="relative min-h-screen flex items-center pt-24 overflow-hidden bg-primary">
       {/* Background Image with Overlay */}
-      <div className="absolute inset-0 z-0">
-        <img 
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <motion.img 
           src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" 
           alt="Warmi Kapital - Firma Jurídico Financiera" 
           className="w-full h-full object-cover opacity-30 grayscale"
           referrerPolicy="no-referrer"
+          animate={reduced ? {} : { scale: [1, 1.05, 1] }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
         />
         <div className="absolute inset-0 bg-primary/90" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent" />
+
+        {/* Ambient floating lights */}
+        {!reduced && (
+          <>
+            <motion.div 
+              animate={{ 
+                scale: [1, 1.15, 1], 
+                opacity: [0.15, 0.25, 0.15],
+                x: [0, 20, 0],
+                y: [0, -15, 0]
+              }}
+              transition={{ 
+                duration: 12, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+              className="absolute top-1/4 right-1/4 w-[450px] h-[450px] rounded-full bg-secondary/35 blur-[120px] pointer-events-none mix-blend-screen"
+            />
+            <motion.div 
+              animate={{ 
+                scale: [1.1, 0.95, 1.1], 
+                opacity: [0.1, 0.18, 0.1],
+                x: [0, -30, 0],
+                y: [0, 20, 0]
+              }}
+              transition={{ 
+                duration: 16, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+              className="absolute bottom-1/3 left-10 w-[350px] h-[350px] rounded-full bg-secondary/25 blur-[100px] pointer-events-none mix-blend-screen"
+            />
+          </>
+        )}
       </div>
 
       <div className="container mx-auto px-6 relative z-10 pt-20 pb-32">
         <div className="max-w-4xl">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
           >
-            <span className="text-secondary font-sans font-semibold text-sm uppercase tracking-[0.2em] mb-6 block">
+            <motion.span variants={itemVariants} className="text-secondary font-sans font-semibold text-sm uppercase tracking-[0.2em] mb-6 block">
               Boutique Legal y Financiera
-            </span>
-            <h1 className="text-5xl md:text-7xl font-display font-medium text-white leading-[1.1] mb-8">
+            </motion.span>
+            <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-display font-medium text-white leading-[1.1] mb-8">
               El escudo corporativo para empresas que <span className="text-secondary italic">escalan sin vértigo.</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-white/80 mb-6 max-w-3xl font-sans font-light leading-relaxed">
+            </motion.h1>
+            <motion.p variants={itemVariants} className="text-xl md:text-2xl text-white/80 mb-6 max-w-3xl font-sans font-light leading-relaxed">
               Tu negocio ya genera valor; nuestro trabajo es blindarlo. Estructuración legal, tributaria y financiera para directivos estratégicos enfocados en resultados.
-            </p>
-            <p className="text-sm text-secondary/90 mb-12 max-w-3xl font-sans uppercase tracking-[0.1em] font-semibold flex items-center gap-2">
+            </motion.p>
+            <motion.p variants={itemVariants} className="text-sm text-secondary/90 mb-12 max-w-3xl font-sans uppercase tracking-[0.1em] font-semibold flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-secondary inline-block"></span> Estudio Jurídico Especializado en Derecho y Finanzas Corporativas.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-5">
-              <a href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" className="bg-secondary text-primary px-8 py-4 rounded-sm font-sans font-semibold flex items-center justify-center gap-2 hover:bg-white hover:text-primary hover:-translate-y-0.5 hover:shadow-xl hover:shadow-secondary/20 transition-all duration-300">
+            </motion.p>
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-5">
+              <motion.a 
+                href={getWhatsAppUrl()} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                onClick={playPremiumPop}
+                whileHover={{ scale: 1.04, y: -2, boxShadow: "0 20px 35px -10px rgba(181, 160, 114, 0.45)" }}
+                whileTap={{ scale: 0.98 }}
+                className="bg-secondary text-primary px-8 py-4 rounded-sm font-sans font-semibold flex items-center justify-center gap-2 hover:bg-white hover:text-primary transition-all duration-300 shadow-xl shadow-secondary/10 cursor-pointer text-center"
+              >
                 Agendar Consulta Ejecutiva
-              </a>
-              <a href="#nosotros" className="border border-white/20 text-white px-8 py-4 rounded-sm font-sans font-semibold flex items-center justify-center hover:bg-white/5 hover:border-white/40 transition-all duration-300">
+              </motion.a>
+              <motion.a 
+                href="#nosotros" 
+                whileHover={{ scale: 1.03, y: -1, backgroundColor: "rgba(255, 255, 255, 0.08)", borderColor: "rgba(255, 255, 255, 0.5)" }}
+                whileTap={{ scale: 0.98 }}
+                className="border border-white/20 text-white px-8 py-4 rounded-sm font-sans font-semibold flex items-center justify-center transition-all duration-300"
+              >
                 Conocer la Firma
-              </a>
-            </div>
+              </motion.a>
+            </motion.div>
           </motion.div>
         </div>
       </div>
@@ -207,37 +396,43 @@ const Hero = () => {
 };
 
 const About = () => {
+  const reduced = useReducedMotion();
+
   return (
-    <section id="nosotros" className="py-32 bg-white relative">
+    <section id="nosotros" className="py-32 bg-white relative overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-12 gap-16 items-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="lg:col-span-5 relative"
+            initial={{ opacity: 0, scale: 0.96, y: reduced ? 0 : 30, filter: reduced ? "none" : "blur(4px)" }}
+            whileInView={{ opacity: 1, scale: 1, y: 0, filter: "none" }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            whileHover={reduced ? {} : { y: -6, scale: 1.01 }}
+            className="lg:col-span-5 relative group"
           >
-            <div className="aspect-[3/4] rounded-sm overflow-hidden shadow-2xl relative z-10 w-full max-w-md mx-auto lg:mx-0">
+            <div className="aspect-[3/4] rounded-sm overflow-hidden shadow-2xl relative z-10 w-full max-w-md mx-auto lg:mx-0 bg-white">
               <img 
                 src="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778870973/KarenG_eo2cyd.png" 
                 alt="Karen Gamarra - CEO & Founder" 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 referrerPolicy="no-referrer"
               />
             </div>
-            <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-primary z-0 rounded-sm" />
-            <div className="absolute -top-8 -right-8 w-48 h-48 bg-secondary/20 z-0 rounded-sm" />
+            <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-primary z-0 rounded-sm transition-transform duration-500 group-hover:-translate-x-2 group-hover:translate-y-2" />
+            <div className="absolute -top-8 -right-8 w-48 h-48 bg-secondary/20 z-0 rounded-sm transition-transform duration-500 group-hover:translate-x-2 group-hover:-translate-y-2" />
             
             {/* Signature Badge */}
-            <div className="absolute bottom-10 -right-6 lg:-right-12 z-20 bg-white p-6 shadow-xl w-64 border-l-4 border-secondary hidden sm:block">
+            <motion.div 
+              whileHover={{ scale: 1.03 }}
+              className="absolute bottom-10 -right-6 lg:-right-12 z-20 bg-white p-6 shadow-xl w-64 border-l-4 border-secondary hidden sm:block"
+            >
                <span className="block font-display font-medium text-lg text-primary">Karen Gamarra</span>
                <span className="block font-sans text-xs uppercase tracking-widest text-carbon/60 mt-1">CEO & Founder</span>
-            </div>
+            </motion.div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: reduced ? 0 : 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
@@ -274,16 +469,24 @@ const About = () => {
 };
 
 const VulnerabilitySection = () => {
+  const reduced = useReducedMotion();
+
   return (
-    <section className="py-24 bg-carbon text-white relative border-y border-white/5">
+    <section className="py-24 bg-carbon text-white relative border-y border-white/5 overflow-hidden">
       <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop')] opacity-10 bg-cover bg-center grayscale mix-blend-overlay" />
       <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
+        <motion.div 
+          initial={{ opacity: 0, y: reduced ? 0 : 35, filter: reduced ? "none" : "blur(4px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "none" }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="max-w-4xl mx-auto text-center"
+        >
           <span className="text-secondary font-sans font-semibold text-sm uppercase tracking-[0.2em] mb-6 block">
             El Problema del Crecimiento
           </span>
-          <h2 className="text-3xl md:text-5xl font-display font-medium leading-[1.2] mb-8 tracking-tight">
-            Tu empresa factura millones, pero tu <span className="text-secondary italic">estructura legal</span> es frágil.
+          <h2 className="text-3xl md:text-5xl font-display font-medium leading-[1.2] mb-8 tracking-tight !text-white">
+            Tu empresa factura millones, pero tu <span className="!text-secondary italic">estructura legal</span> es frágil.
           </h2>
           <p className="text-lg md:text-xl text-white/70 font-sans font-light leading-relaxed mb-12">
             El mayor riesgo de un CEO no son las bajas ventas, es el crecimiento sin orden. 
@@ -291,26 +494,27 @@ const VulnerabilitySection = () => {
             contingencias que amenazan con destruir en meses lo que construiste en años.
           </p>
           <div className="grid sm:grid-cols-3 gap-8 text-left border-t border-white/10 pt-12">
-             <div>
+             <motion.div whileHover={{ y: -4 }} className="transition-transform duration-300">
                 <h4 className="text-secondary font-display text-xl mb-3 font-medium">1. Fiscos y Multas</h4>
                 <p className="text-white/60 text-sm font-light leading-relaxed">Una auditoría mal manejada o una estructura fiscal ineficiente puede asfixiar el flujo de caja corporativo.</p>
-             </div>
-             <div>
+             </motion.div>
+             <motion.div whileHover={{ y: -4 }} className="transition-transform duration-300">
                 <h4 className="text-secondary font-display text-xl mb-3 font-medium">2. Sociedades de Papel</h4>
                 <p className="text-white/60 text-sm font-light leading-relaxed">Accionistas sin acuerdos claros terminan bloqueando las decisiones críticas y amenazando la operatividad.</p>
-             </div>
-             <div>
+             </motion.div>
+             <motion.div whileHover={{ y: -4 }} className="transition-transform duration-300">
                 <h4 className="text-secondary font-display text-xl mb-3 font-medium">3. Contratos Vacíos</h4>
                 <p className="text-white/60 text-sm font-light leading-relaxed">Plantillas descargadas, o acuerdos sin rigor legal que exponen injustificadamente tu patrimonio personal.</p>
-             </div>
+             </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
 };
 
 const Services = () => {
+  const reduced = useReducedMotion();
   const services = [
     {
       title: "Arquitectura Corporativa y M&A",
@@ -345,29 +549,39 @@ const Services = () => {
   ];
 
   return (
-    <section id="servicios" className="py-32 bg-bg-sand">
+    <section id="servicios" className="py-32 bg-bg-sand overflow-hidden">
       <div className="container mx-auto px-6">
-        <div className="text-center max-w-3xl mx-auto mb-20">
+        <motion.div 
+          initial={{ opacity: 0, y: reduced ? 0 : 30, filter: reduced ? "none" : "blur(4px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "none" }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+          className="text-center max-w-3xl mx-auto mb-20"
+        >
           <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-4 block">Capacidades Estratégicas</span>
           <h2 className="text-4xl md:text-5xl font-display font-medium text-primary mb-6 tracking-tight">Blindaje y Estructuración</h2>
           <p className="text-carbon/70 text-lg font-sans font-light">
             Soluciones jurídicas y financieras de alta especialidad. Operamos como el escudo estratégico de su empresa frente a los escenarios corporativos más exigentes.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((item, idx) => (
             <motion.div
               key={item.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className="bg-white border text-left p-10 lg:p-12 border border-primary/5 hover:border-secondary/30 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 group flex flex-col h-full rounded-sm"
+              initial={{ opacity: 0, y: reduced ? 0 : 40, filter: reduced ? "none" : "blur(4px)" }}
+              whileInView={{ opacity: 1, y: 0, filter: "none" }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6, delay: reduced ? 0 : idx * 0.1, ease: "easeOut" }}
+              whileHover={reduced ? {} : { y: -8, scale: 1.02, boxShadow: "0 25px 50px -12px rgba(13, 43, 94, 0.08)" }}
+              className="bg-white border text-left p-10 lg:p-12 border-primary/5 hover:border-secondary/30 transition-all duration-500 group flex flex-col h-full rounded-sm"
             >
-              <div className="mb-8 mb-auto opacity-80 group-hover:opacity-100 transition-opacity">
+              <motion.div 
+                whileHover={reduced ? {} : { scale: 1.1, rotate: 3 }}
+                className="mb-8 mb-auto opacity-80 group-hover:opacity-100 transition-all duration-300 w-fit"
+              >
                 {item.icon}
-              </div>
+              </motion.div>
               <h3 className="text-2xl font-display font-medium mb-4 text-primary tracking-tight group-hover:text-secondary transition-colors">{item.title}</h3>
               <p className="text-carbon/70 leading-relaxed font-sans font-light text-sm lg:text-base">
                 {item.description}
@@ -381,6 +595,7 @@ const Services = () => {
 };
 
 const Differentiator = () => {
+  const reduced = useReducedMotion();
   const points = [
     {
       title: "Rigor Corporativo, Trato Local",
@@ -405,35 +620,50 @@ const Differentiator = () => {
   ];
 
   return (
-    <section className="py-32 bg-primary text-white border-t border-white/5">
+    <section className="py-32 bg-primary text-white border-t border-white/5 overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-12 gap-16">
-          <div className="lg:col-span-5">
+          <motion.div 
+            initial={{ opacity: 0, x: reduced ? 0 : -35, filter: reduced ? "none" : "blur(4px)" }}
+            whileInView={{ opacity: 1, x: 0, filter: "none" }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+            className="lg:col-span-5"
+          >
             <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-4 block">El Estándar Warmi</span>
-            <h2 className="text-4xl md:text-5xl font-display font-medium text-white mb-8 leading-[1.2] tracking-tight">
-              ¿Por qué las empresas nos confían sus decisiones <span className="text-secondary italic">críticas</span>?
+            <h2 className="text-4xl md:text-5xl font-display font-medium mb-8 leading-[1.2] tracking-tight !text-white">
+              ¿Por qué las empresas nos confían sus decisiones <span className="!text-secondary italic">críticas</span>?
             </h2>
             <p className="text-lg text-white/70 font-sans font-light leading-relaxed mb-10">
               Transformamos la complejidad legal y tributaria en ventajas competitivas claras. Nuestro modelo elimina la burocracia tradicional de los grandes estudios.
             </p>
-            <a href="https://wa.me/51932340282?text=Hola,%20me%20gustar%C3%ADa%20agendar%20una%20consulta%20en%20Warmi%20Kapital." target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 text-secondary font-sans font-semibold uppercase tracking-widest text-xs hover:text-white hover:gap-4 transition-all duration-300 mt-4">
+            <motion.a 
+              href={getWhatsAppUrl()} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              onClick={playPremiumPop}
+              whileHover={{ x: 6, color: "#fff" }}
+              className="inline-flex items-center gap-3 text-secondary font-sans font-semibold uppercase tracking-widest text-xs hover:gap-4 transition-all duration-300 mt-4 cursor-pointer"
+            >
               Iniciar estructuración estratégica <ArrowRight size={16} />
-            </a>
-          </div>
+            </motion.a>
+          </motion.div>
           
           <div className="lg:col-span-7 grid sm:grid-cols-2 gap-x-8 gap-y-12">
             {points.map((pt, idx) => (
               <motion.div 
                 key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
+                initial={{ opacity: 0, y: reduced ? 0 : 25, filter: reduced ? "none" : "blur(4px)" }}
+                whileInView={{ opacity: 1, y: 0, filter: "none" }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, delay: reduced ? 0 : idx * 0.1 }}
+                whileHover={reduced ? {} : { y: -4 }}
+                className="group cursor-default"
               >
-                <div className="mb-6 bg-white/5 w-12 h-12 flex items-center justify-center rounded-sm">
+                <div className="mb-6 bg-white/5 w-12 h-12 flex items-center justify-center rounded-sm transition-all duration-300 group-hover:bg-secondary group-hover:text-primary text-secondary">
                   {pt.icon}
                 </div>
-                <h3 className="text-xl font-display font-medium text-white mb-3">{pt.title}</h3>
+                <h3 className="text-xl font-display font-medium mb-3 !text-white group-hover:!text-secondary transition-colors">{pt.title}</h3>
                 <p className="text-white/60 font-sans font-light leading-relaxed text-sm">
                   {pt.desc}
                 </p>
@@ -456,6 +686,8 @@ type TeamMemberData = {
 };
 
 const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadership' | 'consultant' | 'public_procurement' | 'legal' }) => {
+  const reduced = useReducedMotion();
+
   const renderImageOrInitials = (extraImageClasses: string = "", extraInitialsClasses: string = "") => {
     if (member.image) {
       return <img src={member.image} alt={member.name} className={`w-full h-full object-cover grayscale mix-blend-multiply opacity-90 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 origin-bottom ${extraImageClasses}`} referrerPolicy="no-referrer" />;
@@ -470,12 +702,14 @@ const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadersh
   if (tier === 'leadership') {
     return (
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        initial={{ opacity: 0, y: reduced ? 0 : 30, filter: reduced ? "none" : "blur(4px)" }}
+        whileInView={{ opacity: 1, y: 0, filter: "none" }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        whileHover={reduced ? {} : { y: -4 }}
         className="group flex flex-col h-full"
       >
-         <div className="overflow-hidden aspect-[4/5] w-full mb-8 relative bg-white border border-primary/5 group-hover:border-secondary/30 transition-colors duration-500 rounded-sm">
+         <div className="overflow-hidden aspect-[4/5] w-full mb-8 relative bg-white border border-primary/5 group-hover:border-secondary/30 transition-colors duration-500 rounded-sm shadow-sm group-hover:shadow-lg transition-all duration-300">
              {renderImageOrInitials()}
          </div>
          <div className="flex-1 flex flex-col border-l-2 border-secondary pl-5 py-1">
@@ -490,12 +724,14 @@ const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadersh
   if (tier === 'public_procurement') {
     return (
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        initial={{ opacity: 0, y: reduced ? 0 : 30, filter: reduced ? "none" : "blur(4px)" }}
+        whileInView={{ opacity: 1, y: 0, filter: "none" }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        whileHover={reduced ? {} : { y: -4 }}
         className="group flex flex-col h-full"
       >
-         <div className="overflow-hidden aspect-[4/5] w-full mb-6 relative bg-white border border-primary/5 group-hover:border-primary/20 transition-colors duration-500 rounded-sm">
+         <div className="overflow-hidden aspect-[4/5] w-full mb-6 relative bg-white border border-primary/5 group-hover:border-primary/20 transition-colors duration-500 rounded-sm shadow-sm group-hover:shadow-lg transition-all duration-300">
              {renderImageOrInitials('opacity-80', 'text-4xl lg:text-6xl')}
          </div>
          <div className="flex-1 flex flex-col border-l border-primary/20 pl-5 py-1 group-hover:border-primary/60 transition-colors duration-500">
@@ -513,12 +749,14 @@ const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadersh
   if (tier === 'consultant') {
     return (
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        initial={{ opacity: 0, y: reduced ? 0 : 30, filter: reduced ? "none" : "blur(4px)" }}
+        whileInView={{ opacity: 1, y: 0, filter: "none" }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        whileHover={reduced ? {} : { y: -4 }}
         className="group flex flex-col h-full"
       >
-         <div className="overflow-hidden aspect-[4/5] w-full mb-6 relative bg-white border border-primary/5 group-hover:border-secondary/20 transition-colors duration-500 rounded-sm">
+         <div className="overflow-hidden aspect-[4/5] w-full mb-6 relative bg-white border border-primary/5 group-hover:border-secondary/20 transition-colors duration-500 rounded-sm shadow-sm group-hover:shadow-lg transition-all duration-300">
              {renderImageOrInitials('opacity-80')}
          </div>
          <div className="flex-1 flex flex-col border-l border-primary/20 pl-4 py-1 group-hover:border-secondary transition-colors duration-500">
@@ -532,12 +770,14 @@ const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadersh
 
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      initial={{ opacity: 0, y: reduced ? 0 : 30, filter: reduced ? "none" : "blur(4px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "none" }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      whileHover={reduced ? {} : { y: -4 }}
       className="group flex flex-col h-full"
     >
-       <div className="overflow-hidden aspect-[4/5] w-full max-w-[240px] mb-5 relative bg-white border border-primary/5 group-hover:border-secondary/20 rounded-sm mx-auto transition-colors duration-500">
+       <div className="overflow-hidden aspect-[4/5] w-full max-w-[240px] mb-5 relative bg-white border border-primary/5 group-hover:border-secondary/20 rounded-sm mx-auto transition-colors duration-500 shadow-sm group-hover:shadow-lg transition-all duration-300">
            {renderImageOrInitials('opacity-70')}
        </div>
        <div className="flex-1 flex flex-col text-center">
@@ -730,8 +970,8 @@ const Contact = () => {
           <div className="grid lg:grid-cols-2">
              <div className="p-12 md:p-20 text-white flex flex-col justify-center">
               <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-6 block">Diagnóstico Inicial</span>
-              <h2 className="text-4xl md:text-5xl font-display font-medium mb-8 tracking-tight leading-[1.1] text-white">
-                Hablemos de tu siguiente <span className="text-secondary italic">decisión crítica.</span>
+              <h2 className="text-4xl md:text-5xl font-display font-medium mb-8 tracking-tight leading-[1.1] !text-white">
+                Hablemos de tu siguiente <span className="!text-secondary italic">decisión crítica.</span>
               </h2>
               <p className="text-white/60 text-lg mb-16 font-light leading-relaxed max-w-md">
                 Agenda una sesión ejecutiva para analizar la exposición legal y financiera de tu empresa, con absoluta reserva profesional.
@@ -825,7 +1065,7 @@ const Footer = () => {
           </div>
 
           <div className="col-span-1">
-            <h5 className="font-display font-bold text-secondary mb-8 uppercase tracking-widest text-xs">Empresa</h5>
+            <h5 className="font-display font-bold !text-secondary mb-8 uppercase tracking-widest text-xs">Empresa</h5>
             <div className="flex flex-col gap-4 text-white/60">
               <a href="#nosotros" className="hover:text-white transition-colors">Nosotros</a>
               <a href="#servicios" className="hover:text-white transition-colors">Servicios</a>
@@ -834,7 +1074,7 @@ const Footer = () => {
           </div>
 
           <div className="col-span-1">
-            <h5 className="font-display font-bold text-secondary mb-8 uppercase tracking-widest text-xs">Especialidades</h5>
+            <h5 className="font-display font-bold !text-secondary mb-8 uppercase tracking-widest text-xs">Especialidades</h5>
             <div className="flex flex-col gap-4 text-white/60">
               <a href="#servicios" className="hover:text-white transition-colors">Derecho Financiero</a>
               <a href="#servicios" className="hover:text-white transition-colors">Derecho Tributario</a>
@@ -859,7 +1099,7 @@ const Footer = () => {
 
 export default function App() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-bg-sand">
       <Navbar />
       <Hero />
       <About />
@@ -867,6 +1107,7 @@ export default function App() {
       <Services />
       <Differentiator />
       <Team />
+      <ElegantDivider />
       <Vision />
       <Contact />
       <WhatsAppFloatingButton />
