@@ -695,111 +695,61 @@ type TeamMemberData = {
 const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadership' | 'consultant' | 'public_procurement' | 'legal' }) => {
   const reduced = useReducedMotion();
 
-  const renderImageOrInitials = (extraImageClasses: string = "", extraInitialsClasses: string = "") => {
+  const renderImageOrInitials = () => {
     if (member.image) {
       return (
         <img 
           src={member.image} 
           alt={member.name} 
-          className={`w-full h-full object-cover object-top grayscale mix-blend-multiply opacity-90 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 origin-top ${extraImageClasses}`} 
+          className="w-full h-full object-cover object-top grayscale mix-blend-multiply opacity-90 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-700 ease-out origin-top" 
           loading="lazy" 
           referrerPolicy="no-referrer" 
         />
       );
     }
     return (
-      <div className={`w-full h-full flex items-center justify-center bg-primary/5 text-primary/40 font-display font-medium mix-blend-multiply group-hover:bg-secondary/10 group-hover:text-secondary/80 transition-colors duration-500 ${extraInitialsClasses}`}>
+      <div className="w-full h-full flex items-center justify-center bg-primary/5 text-primary/40 font-display font-medium text-4xl sm:text-5xl mix-blend-multiply group-hover:bg-secondary/10 group-hover:text-secondary/80 transition-colors duration-500">
         {member.initials}
       </div>
     );
   };
 
-  if (tier === 'leadership') {
-    return (
-      <motion.div 
-        initial={{ opacity: 0, y: reduced ? 0 : 30, filter: reduced ? "none" : "blur(4px)" }}
-        whileInView={{ opacity: 1, y: 0, filter: "none" }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        whileHover={reduced ? {} : { y: -4 }}
-        className="group flex flex-col h-full"
-      >
-         <div className="overflow-hidden aspect-[4/5] w-full mb-6 sm:mb-8 relative bg-white border border-primary/5 group-hover:border-secondary/30 transition-colors duration-500 rounded-sm shadow-sm group-hover:shadow-lg">
-             {renderImageOrInitials()}
-         </div>
-         <div className="flex-1 flex flex-col border-l-2 border-secondary pl-4 sm:pl-5 py-1">
-             <h4 className="font-sans font-bold text-2xl sm:text-3xl text-primary mb-1">{member.name}</h4>
-             <p className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-4 sm:mb-5">{member.role}</p>
-             <p className="text-carbon/80 font-sans font-light leading-relaxed text-sm sm:text-base">{member.bio}</p>
-         </div>
-      </motion.div>
-    );
-  }
+  const nameSize = tier === 'leadership' 
+    ? "text-2xl sm:text-3xl" 
+    : tier === 'legal' 
+    ? "text-lg sm:text-xl" 
+    : "text-xl sm:text-2xl";
 
-  if (tier === 'public_procurement') {
-    return (
-      <motion.div 
-        initial={{ opacity: 0, y: reduced ? 0 : 30, filter: reduced ? "none" : "blur(4px)" }}
-        whileInView={{ opacity: 1, y: 0, filter: "none" }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        whileHover={reduced ? {} : { y: -4 }}
-        className="group flex flex-col h-full"
-      >
-         <div className="overflow-hidden aspect-[4/5] w-full mb-6 relative bg-white border border-primary/5 group-hover:border-primary/20 transition-colors duration-500 rounded-sm shadow-sm group-hover:shadow-lg">
-             {renderImageOrInitials('opacity-80', 'text-4xl lg:text-6xl')}
-         </div>
-         <div className="flex-1 flex flex-col border-l border-primary/20 pl-4 sm:pl-5 py-1 group-hover:border-primary/60 transition-colors duration-500">
-             <h4 className="font-sans font-bold text-xl sm:text-2xl lg:text-3xl text-primary mb-1">{member.name}</h4>
-             <p className="text-carbon/60 font-sans font-semibold text-[10px] sm:text-xs uppercase tracking-[0.15em] mb-2">{member.role}</p>
-             {member.credentials && (
-                <p className="text-secondary font-sans font-semibold text-[9px] sm:text-[10px] uppercase tracking-[0.18em] mb-4 font-variant-small-caps">{member.credentials.split('·').join(' · ')}</p>
-             )}
-             <p className="text-carbon/80 font-sans font-light leading-relaxed text-sm">{member.bio}</p>
-         </div>
-      </motion.div>
-    );
-  }
-
-  if (tier === 'consultant') {
-    return (
-      <motion.div 
-        initial={{ opacity: 0, y: reduced ? 0 : 30, filter: reduced ? "none" : "blur(4px)" }}
-        whileInView={{ opacity: 1, y: 0, filter: "none" }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        whileHover={reduced ? {} : { y: -4 }}
-        className="group flex flex-col h-full"
-      >
-         <div className="overflow-hidden aspect-[4/5] w-full mb-6 relative bg-white border border-primary/5 group-hover:border-secondary/20 transition-colors duration-500 rounded-sm shadow-sm group-hover:shadow-lg">
-             {renderImageOrInitials('opacity-80')}
-         </div>
-         <div className="flex-1 flex flex-col border-l border-primary/20 pl-4 py-1 group-hover:border-secondary transition-colors duration-500">
-             <h4 className="font-sans font-bold text-xl sm:text-2xl text-primary mb-1">{member.name}</h4>
-             <p className="text-carbon/60 font-sans font-semibold text-[10px] sm:text-xs uppercase tracking-[0.15em] mb-3">{member.role}</p>
-             <p className="text-carbon/70 font-sans font-light leading-relaxed text-sm">{member.bio}</p>
-         </div>
-      </motion.div>
-    );
-  }
+  const bioSize = tier === 'leadership' ? "text-sm sm:text-base" : "text-sm";
 
   return (
     <motion.div 
-      initial={{ opacity: 0, y: reduced ? 0 : 30, filter: reduced ? "none" : "blur(4px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "none" }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
+      initial={{ opacity: 0, y: reduced ? 0 : 25 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
       whileHover={reduced ? {} : { y: -4 }}
-      className="group flex flex-col h-full"
+      className="group flex flex-col h-full bg-white/50 hover:bg-white border border-primary/5 hover:border-secondary/30 p-4 sm:p-5 rounded-[6px] shadow-2xs hover:shadow-md transition-all duration-500"
     >
-       <div className="overflow-hidden aspect-[4/5] w-full max-w-[240px] mb-5 relative bg-white border border-primary/5 group-hover:border-secondary/20 rounded-sm mx-auto transition-colors duration-500 shadow-sm group-hover:shadow-lg">
-           {renderImageOrInitials('opacity-70')}
-       </div>
-       <div className="flex-1 flex flex-col text-center">
-           <h4 className="font-sans font-bold text-lg text-primary mb-1">{member.name}</h4>
-           <p className="text-carbon/50 font-sans font-semibold text-[9px] sm:text-[10px] uppercase tracking-[0.15em] mb-3">{member.role}</p>
-           <p className="text-carbon/60 font-sans font-light leading-relaxed text-xs sm:text-sm max-w-xs mx-auto">{member.bio}</p>
-       </div>
+      <div className="overflow-hidden aspect-[4/5] w-full mb-5 relative bg-white border border-primary/10 group-hover:border-secondary/40 transition-all duration-500 rounded-[4px] shadow-xs group-hover:shadow-md">
+        {renderImageOrInitials()}
+      </div>
+      <div className="flex-1 flex flex-col border-l-2 border-secondary/60 group-hover:border-secondary pl-4 sm:pl-5 py-1 transition-colors duration-300">
+        <h4 className={`font-sans font-bold ${nameSize} text-primary mb-1 tracking-tight`}>
+          {member.name}
+        </h4>
+        <p className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.18em] mb-2">
+          {member.role}
+        </p>
+        {member.credentials && (
+          <p className="text-primary/80 font-sans font-medium text-xs tracking-wide mb-3 bg-primary/5 px-2.5 py-1 rounded-xs w-fit border border-primary/10">
+            {member.credentials}
+          </p>
+        )}
+        <p className={`text-carbon/80 font-sans font-light leading-relaxed ${bioSize} mt-1`}>
+          {member.bio}
+        </p>
+      </div>
     </motion.div>
   );
 };
@@ -807,53 +757,145 @@ const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadersh
 const CriminalComplianceBlock = () => {
   const reduced = useReducedMotion();
 
+  const formacion = [
+    "Doctorando en Derecho.",
+    "Maestro en Derecho Penal y Ciencias Criminológicas.",
+    "Abogado por la Universidad Nacional de Trujillo.",
+    "Especialista en Criminal Compliance por la Universidad de Granada, España."
+  ];
+
+  const trayectoria = [
+    "Más de 12 años de experiencia en litigación penal.",
+    "Docente universitario.",
+    "Autor del libro “Delitos contra la Administración Pública”.",
+    "Investigador RENACYT Nivel VII."
+  ];
+
+  const areas = [
+    "Derecho Penal Económico",
+    "Derecho Penal Empresarial",
+    "Delitos contra la Administración Pública",
+    "Criminal Compliance",
+    "Litigio penal de alta complejidad"
+  ];
+
   return (
     <motion.div 
-      initial={{ opacity: 0, y: reduced ? 0 : 30, filter: reduced ? "none" : "blur(4px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "none" }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className="max-w-6xl mx-auto my-16 bg-white/70 border border-primary/10 rounded-sm p-6 sm:p-8 lg:p-12 shadow-sm group hover:border-secondary/30 transition-all duration-500"
+      initial={{ opacity: 0, y: reduced ? 0 : 25 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="max-w-[1160px] mx-auto my-16 bg-[#FAF8F5] border border-primary/10 rounded-[6px] shadow-sm overflow-hidden group hover:border-secondary/30 transition-all duration-500"
     >
-      <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-        <div className="lg:col-span-5 flex justify-center">
-          <div className="overflow-hidden aspect-[4/5] w-full max-w-xs sm:max-w-sm relative bg-white border border-primary/5 rounded-sm shadow-sm group-hover:shadow-md transition-all duration-300">
-            <img 
-              src="https://res.cloudinary.com/dpo7kthwf/image/upload/f_auto,q_auto/v1785800495/IMG-20260414-WA0083.jpg_ywjewq.jpg" 
-              alt="Godofredo André García León - Consultor especializado en Derecho Penal Económico y Criminal Compliance" 
-              className="w-full h-full object-cover object-top grayscale mix-blend-multiply opacity-90 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 origin-top" 
-              loading="lazy" 
-              referrerPolicy="no-referrer" 
-            />
-          </div>
-        </div>
-
-        <div className="lg:col-span-7 flex flex-col justify-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/5 border border-primary/10 rounded-full w-fit mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
-            <span className="text-primary font-sans font-semibold text-[11px] sm:text-xs uppercase tracking-[0.15em]">
-              Derecho Penal Empresarial y Criminal Compliance
+      <div className="grid lg:grid-cols-12 items-stretch">
+        {/* Columna izquierda: Fotografía (~36%) */}
+        <div className="lg:col-span-5 xl:col-span-4 relative min-h-[380px] sm:min-h-[440px] lg:min-h-full bg-primary/5 overflow-hidden">
+          <img 
+            src="https://res.cloudinary.com/dpo7kthwf/image/upload/f_auto,q_auto/v1785800495/IMG-20260414-WA0083.jpg_ywjewq.jpg" 
+            alt="Godofredo André García León - Consultor especializado en Derecho Penal Económico y Criminal Compliance" 
+            className="w-full h-full object-cover object-top grayscale mix-blend-multiply opacity-90 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 ease-out origin-top" 
+            loading="lazy" 
+            referrerPolicy="no-referrer" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/10 to-transparent pointer-events-none" />
+          <div className="absolute bottom-4 left-4 right-4 text-white lg:hidden">
+            <span className="text-secondary font-sans font-semibold text-[10px] uppercase tracking-[0.2em] block mb-1">
+              INCORPORACIÓN ESTRATÉGICA
             </span>
-          </div>
-
-          <h3 className="font-sans font-bold text-2xl sm:text-3xl lg:text-4xl text-primary mb-2 tracking-tight">
-            Godofredo André García León
-          </h3>
-
-          <p className="text-secondary font-sans font-semibold text-xs sm:text-sm uppercase tracking-[0.18em] mb-5">
-            Consultor especializado en Derecho Penal Económico y Criminal Compliance
-          </p>
-
-          <p className="text-carbon/80 font-sans font-light leading-relaxed text-sm sm:text-base mb-6">
-            Abogado y maestro en Derecho Penal y Ciencias Criminológicas, con especialización en Criminal Compliance por la Universidad de Granada. Cuenta con más de 12 años de experiencia en litigación penal, Derecho Penal Económico, Derecho Penal Empresarial y delitos contra la Administración Pública.
-          </p>
-
-          <div className="border-l-2 border-secondary pl-4 py-2 bg-secondary/5 rounded-r-sm">
-            <p className="text-primary/90 font-sans font-medium text-xs sm:text-sm leading-relaxed">
-              Su incorporación fortalece la capacidad de Warmi Kapital para brindar una protección legal integral y preventiva a empresas, directivos y organizaciones.
-            </p>
+            <h3 className="font-display font-medium text-xl text-white">
+              Godofredo André García León
+            </h3>
           </div>
         </div>
+
+        {/* Columna derecha: Información Profesional (~64%) */}
+        <div className="lg:col-span-7 xl:col-span-8 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
+          <div>
+            {/* Tag superior */}
+            <div className="inline-flex items-center gap-2 mb-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em]">
+                INCORPORACIÓN ESTRATÉGICA
+              </span>
+            </div>
+
+            {/* Nombre */}
+            <h3 className="font-display font-medium text-2xl sm:text-3xl lg:text-4xl text-primary tracking-tight mb-1">
+              Godofredo André García León
+            </h3>
+
+            {/* Línea dorada interactiva */}
+            <div className="w-12 group-hover:w-28 h-0.5 bg-secondary/80 transition-all duration-500 mb-3" />
+
+            {/* Cargo */}
+            <p className="text-secondary font-sans font-semibold text-xs sm:text-sm uppercase tracking-[0.12em] mb-4">
+              Consultor especializado en Derecho Penal Económico y Criminal Compliance
+            </p>
+
+            {/* Introducción */}
+            <p className="text-carbon/90 font-sans font-normal text-sm sm:text-base leading-relaxed mb-6 bg-white/80 p-4 rounded-sm border-l-2 border-secondary shadow-2xs">
+              Su incorporación fortalece el área penal estratégica y de cumplimiento de Warmi Kapital, completando una propuesta de protección integral para empresas, directivos y organizaciones.
+            </p>
+
+            {/* Credenciales (Organizadas en dos grupos) */}
+            <div className="grid sm:grid-cols-2 gap-6 mb-6">
+              {/* Formación */}
+              <div className="space-y-2.5">
+                <h4 className="font-sans font-bold text-xs uppercase tracking-[0.15em] text-primary/80 flex items-center gap-1.5 pb-1 border-b border-primary/10">
+                  <span className="w-1 h-3 bg-secondary rounded-full inline-block"></span>
+                  Formación Académica
+                </h4>
+                <ul className="space-y-2">
+                  {formacion.map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-carbon/80 leading-snug">
+                      <span className="text-secondary text-xs mt-0.5 font-bold">▪</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Trayectoria */}
+              <div className="space-y-2.5">
+                <h4 className="font-sans font-bold text-xs uppercase tracking-[0.15em] text-primary/80 flex items-center gap-1.5 pb-1 border-b border-primary/10">
+                  <span className="w-1 h-3 bg-secondary rounded-full inline-block"></span>
+                  Trayectoria y Reconocimiento
+                </h4>
+                <ul className="space-y-2">
+                  {trayectoria.map((item, idx) => (
+                    <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-carbon/80 leading-snug">
+                      <span className="text-secondary text-xs mt-0.5 font-bold">▪</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Áreas de Experiencia */}
+            <div className="mb-2">
+              <h4 className="font-sans font-bold text-xs uppercase tracking-[0.15em] text-primary/80 mb-2.5">
+                Áreas de Experiencia
+              </h4>
+              <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs sm:text-sm text-primary/90 font-sans">
+                {areas.map((area, idx) => (
+                  <span key={idx} className="inline-flex items-center gap-2 border-b border-primary/10 pb-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                    <span>{area}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Cierre Estratégico (Banda horizontal azul institucional al pie) */}
+      <div className="bg-primary text-white p-4 sm:p-5 text-xs sm:text-sm font-sans font-light leading-relaxed border-t border-secondary/20 flex items-center gap-3">
+        <span className="w-1.5 h-8 bg-secondary shrink-0 rounded-full hidden sm:block"></span>
+        <p className="text-white/90">
+          <strong className="text-secondary font-medium">Con su incorporación</strong>, Warmi Kapital integra la dimensión penal a sus capacidades corporativas, financieras y regulatorias, fortaleciendo la protección integral de las empresas.
+        </p>
       </div>
     </motion.div>
   );
@@ -975,13 +1017,10 @@ const Team = () => {
              <p className="text-carbon/70 text-sm sm:text-base font-sans font-light">Especialistas en contratación pública, administración de contratos de obra e infraestructura, y solución de controversias arbitrales con el Estado.</p>
            </div>
            
-           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start max-w-6xl mx-auto">
-             <div className="lg:col-span-7">
-                <TeamProfile member={teamData.publicProcurement[0]} tier="public_procurement" />
-             </div>
-             <div className="lg:col-span-5">
-                <TeamProfile member={teamData.publicProcurement[1]} tier="public_procurement" />
-             </div>
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto">
+             {teamData.publicProcurement.map((member, idx) => (
+               <TeamProfile key={idx} member={member} tier="public_procurement" />
+             ))}
            </div>
         </div>
 
