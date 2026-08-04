@@ -11,6 +11,7 @@
 import { motion, AnimatePresence } from "motion/react";
 import { 
   ChevronRight, 
+  ChevronDown,
   MapPin, 
   Phone, 
   Mail, 
@@ -171,20 +172,23 @@ const Navbar = () => {
     { name: "Nosotros", href: "#nosotros" },
     { name: "Servicios", href: "#servicios" },
     { name: "Equipo", href: "#equipo" },
+    { name: "FAQ", href: "#faq" },
     { name: "Contacto", href: "#contacto" },
   ];
 
   return (
-    <>
+    <header>
       <ScrollProgressBar />
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? "bg-white/95 backdrop-blur-md shadow-sm py-4" : "bg-transparent py-6"}`}>
+      <nav aria-label="Navegación principal" className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? "bg-white/95 backdrop-blur-md shadow-sm py-4" : "bg-transparent py-6"}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <a href="#inicio" className="flex items-center gap-2 transition-transform active:scale-95 duration-200">
+          <a href="#inicio" aria-label="Warmi Kapital - Ir al inicio" className="flex items-center gap-2 transition-transform active:scale-95 duration-200">
             <img 
               src="https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778816751/Recurso_9_hkq6bi.png" 
               alt="Warmi Kapital Logo" 
               className={`h-12 md:h-16 w-auto transition-all ${isScrolled ? "brightness-100" : "md:brightness-0 md:invert"}`}
               referrerPolicy="no-referrer"
+              width="180"
+              height="64"
             />
           </a>
 
@@ -215,7 +219,10 @@ const Navbar = () => {
 
           {/* Mobile Toggle */}
           <button 
-            className="md:hidden text-primary transition-transform active:scale-90"
+            type="button"
+            aria-label={mobileMenuOpen ? "Cerrar menú de navegación" : "Abrir menú de navegación"}
+            aria-expanded={mobileMenuOpen}
+            className="md:hidden text-primary transition-transform active:scale-90 p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
@@ -254,7 +261,7 @@ const Navbar = () => {
           )}
         </AnimatePresence>
       </nav>
-    </>
+    </header>
   );
 };
 
@@ -690,7 +697,15 @@ const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadersh
 
   const renderImageOrInitials = (extraImageClasses: string = "", extraInitialsClasses: string = "") => {
     if (member.image) {
-      return <img src={member.image} alt={member.name} className={`w-full h-full object-cover grayscale mix-blend-multiply opacity-90 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 origin-bottom ${extraImageClasses}`} referrerPolicy="no-referrer" />;
+      return (
+        <img 
+          src={member.image} 
+          alt={member.name} 
+          className={`w-full h-full object-cover object-top grayscale mix-blend-multiply opacity-90 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 origin-top ${extraImageClasses}`} 
+          loading="lazy" 
+          referrerPolicy="no-referrer" 
+        />
+      );
     }
     return (
       <div className={`w-full h-full flex items-center justify-center bg-primary/5 text-primary/40 font-display font-medium mix-blend-multiply group-hover:bg-secondary/10 group-hover:text-secondary/80 transition-colors duration-500 ${extraInitialsClasses}`}>
@@ -709,13 +724,13 @@ const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadersh
         whileHover={reduced ? {} : { y: -4 }}
         className="group flex flex-col h-full"
       >
-         <div className="overflow-hidden aspect-[4/5] w-full mb-8 relative bg-white border border-primary/5 group-hover:border-secondary/30 transition-colors duration-500 rounded-sm shadow-sm group-hover:shadow-lg transition-all duration-300">
+         <div className="overflow-hidden aspect-[4/5] w-full mb-6 sm:mb-8 relative bg-white border border-primary/5 group-hover:border-secondary/30 transition-colors duration-500 rounded-sm shadow-sm group-hover:shadow-lg">
              {renderImageOrInitials()}
          </div>
-         <div className="flex-1 flex flex-col border-l-2 border-secondary pl-5 py-1">
-             <h4 className="font-sans font-bold text-3xl text-primary mb-1">{member.name}</h4>
-             <p className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-5">{member.role}</p>
-             <p className="text-carbon/80 font-sans font-light leading-relaxed text-base">{member.bio}</p>
+         <div className="flex-1 flex flex-col border-l-2 border-secondary pl-4 sm:pl-5 py-1">
+             <h4 className="font-sans font-bold text-2xl sm:text-3xl text-primary mb-1">{member.name}</h4>
+             <p className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-4 sm:mb-5">{member.role}</p>
+             <p className="text-carbon/80 font-sans font-light leading-relaxed text-sm sm:text-base">{member.bio}</p>
          </div>
       </motion.div>
     );
@@ -731,14 +746,14 @@ const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadersh
         whileHover={reduced ? {} : { y: -4 }}
         className="group flex flex-col h-full"
       >
-         <div className="overflow-hidden aspect-[4/5] w-full mb-6 relative bg-white border border-primary/5 group-hover:border-primary/20 transition-colors duration-500 rounded-sm shadow-sm group-hover:shadow-lg transition-all duration-300">
+         <div className="overflow-hidden aspect-[4/5] w-full mb-6 relative bg-white border border-primary/5 group-hover:border-primary/20 transition-colors duration-500 rounded-sm shadow-sm group-hover:shadow-lg">
              {renderImageOrInitials('opacity-80', 'text-4xl lg:text-6xl')}
          </div>
-         <div className="flex-1 flex flex-col border-l border-primary/20 pl-5 py-1 group-hover:border-primary/60 transition-colors duration-500">
-             <h4 className="font-sans font-bold text-2xl lg:text-3xl text-primary mb-1">{member.name}</h4>
-             <p className="text-carbon/60 font-sans font-semibold text-[10px] uppercase tracking-[0.15em] mb-2">{member.role}</p>
+         <div className="flex-1 flex flex-col border-l border-primary/20 pl-4 sm:pl-5 py-1 group-hover:border-primary/60 transition-colors duration-500">
+             <h4 className="font-sans font-bold text-xl sm:text-2xl lg:text-3xl text-primary mb-1">{member.name}</h4>
+             <p className="text-carbon/60 font-sans font-semibold text-[10px] sm:text-xs uppercase tracking-[0.15em] mb-2">{member.role}</p>
              {member.credentials && (
-                <p className="text-secondary font-sans font-semibold text-[9px] uppercase tracking-[0.2em] mb-5 font-variant-small-caps">{member.credentials.split('·').join(' · ')}</p>
+                <p className="text-secondary font-sans font-semibold text-[9px] sm:text-[10px] uppercase tracking-[0.18em] mb-4 font-variant-small-caps">{member.credentials.split('·').join(' · ')}</p>
              )}
              <p className="text-carbon/80 font-sans font-light leading-relaxed text-sm">{member.bio}</p>
          </div>
@@ -756,12 +771,12 @@ const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadersh
         whileHover={reduced ? {} : { y: -4 }}
         className="group flex flex-col h-full"
       >
-         <div className="overflow-hidden aspect-[4/5] w-full mb-6 relative bg-white border border-primary/5 group-hover:border-secondary/20 transition-colors duration-500 rounded-sm shadow-sm group-hover:shadow-lg transition-all duration-300">
+         <div className="overflow-hidden aspect-[4/5] w-full mb-6 relative bg-white border border-primary/5 group-hover:border-secondary/20 transition-colors duration-500 rounded-sm shadow-sm group-hover:shadow-lg">
              {renderImageOrInitials('opacity-80')}
          </div>
          <div className="flex-1 flex flex-col border-l border-primary/20 pl-4 py-1 group-hover:border-secondary transition-colors duration-500">
-             <h4 className="font-sans font-bold text-2xl text-primary mb-1">{member.name}</h4>
-             <p className="text-carbon/50 font-sans font-semibold text-[10px] uppercase tracking-[0.15em] mb-4">{member.role}</p>
+             <h4 className="font-sans font-bold text-xl sm:text-2xl text-primary mb-1">{member.name}</h4>
+             <p className="text-carbon/60 font-sans font-semibold text-[10px] sm:text-xs uppercase tracking-[0.15em] mb-3">{member.role}</p>
              <p className="text-carbon/70 font-sans font-light leading-relaxed text-sm">{member.bio}</p>
          </div>
       </motion.div>
@@ -777,14 +792,69 @@ const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadersh
       whileHover={reduced ? {} : { y: -4 }}
       className="group flex flex-col h-full"
     >
-       <div className="overflow-hidden aspect-[4/5] w-full max-w-[240px] mb-5 relative bg-white border border-primary/5 group-hover:border-secondary/20 rounded-sm mx-auto transition-colors duration-500 shadow-sm group-hover:shadow-lg transition-all duration-300">
+       <div className="overflow-hidden aspect-[4/5] w-full max-w-[240px] mb-5 relative bg-white border border-primary/5 group-hover:border-secondary/20 rounded-sm mx-auto transition-colors duration-500 shadow-sm group-hover:shadow-lg">
            {renderImageOrInitials('opacity-70')}
        </div>
        <div className="flex-1 flex flex-col text-center">
            <h4 className="font-sans font-bold text-lg text-primary mb-1">{member.name}</h4>
-           <p className="text-carbon/40 font-sans font-semibold text-[9px] uppercase tracking-[0.15em] mb-3">{member.role}</p>
-           <p className="text-carbon/60 font-sans font-light leading-relaxed text-xs max-w-xs mx-auto">{member.bio}</p>
+           <p className="text-carbon/50 font-sans font-semibold text-[9px] sm:text-[10px] uppercase tracking-[0.15em] mb-3">{member.role}</p>
+           <p className="text-carbon/60 font-sans font-light leading-relaxed text-xs sm:text-sm max-w-xs mx-auto">{member.bio}</p>
        </div>
+    </motion.div>
+  );
+};
+
+const CriminalComplianceBlock = () => {
+  const reduced = useReducedMotion();
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: reduced ? 0 : 30, filter: reduced ? "none" : "blur(4px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "none" }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="max-w-6xl mx-auto my-16 bg-white/70 border border-primary/10 rounded-sm p-6 sm:p-8 lg:p-12 shadow-sm group hover:border-secondary/30 transition-all duration-500"
+    >
+      <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div className="lg:col-span-5 flex justify-center">
+          <div className="overflow-hidden aspect-[4/5] w-full max-w-xs sm:max-w-sm relative bg-white border border-primary/5 rounded-sm shadow-sm group-hover:shadow-md transition-all duration-300">
+            <img 
+              src="https://res.cloudinary.com/dpo7kthwf/image/upload/f_auto,q_auto/v1785800495/IMG-20260414-WA0083.jpg_ywjewq.jpg" 
+              alt="Godofredo André García León - Consultor especializado en Derecho Penal Económico y Criminal Compliance" 
+              className="w-full h-full object-cover object-top grayscale mix-blend-multiply opacity-90 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 origin-top" 
+              loading="lazy" 
+              referrerPolicy="no-referrer" 
+            />
+          </div>
+        </div>
+
+        <div className="lg:col-span-7 flex flex-col justify-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/5 border border-primary/10 rounded-full w-fit mb-4">
+            <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+            <span className="text-primary font-sans font-semibold text-[11px] sm:text-xs uppercase tracking-[0.15em]">
+              Derecho Penal Empresarial y Criminal Compliance
+            </span>
+          </div>
+
+          <h3 className="font-sans font-bold text-2xl sm:text-3xl lg:text-4xl text-primary mb-2 tracking-tight">
+            Godofredo André García León
+          </h3>
+
+          <p className="text-secondary font-sans font-semibold text-xs sm:text-sm uppercase tracking-[0.18em] mb-5">
+            Consultor especializado en Derecho Penal Económico y Criminal Compliance
+          </p>
+
+          <p className="text-carbon/80 font-sans font-light leading-relaxed text-sm sm:text-base mb-6">
+            Abogado y maestro en Derecho Penal y Ciencias Criminológicas, con especialización en Criminal Compliance por la Universidad de Granada. Cuenta con más de 12 años de experiencia en litigación penal, Derecho Penal Económico, Derecho Penal Empresarial y delitos contra la Administración Pública.
+          </p>
+
+          <div className="border-l-2 border-secondary pl-4 py-2 bg-secondary/5 rounded-r-sm">
+            <p className="text-primary/90 font-sans font-medium text-xs sm:text-sm leading-relaxed">
+              Su incorporación fortalece la capacidad de Warmi Kapital para brindar una protección legal integral y preventiva a empresas, directivos y organizaciones.
+            </p>
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
 };
@@ -860,47 +930,52 @@ const Team = () => {
   };
 
   return (
-    <section id="equipo" className="py-32 bg-bg-sand relative">
+    <section id="equipo" className="py-24 sm:py-32 bg-bg-sand relative overflow-hidden">
       <div className="container mx-auto px-6">
-        <div className="text-center max-w-3xl mx-auto mb-24">
+        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
           <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-4 block">Liderazgo Corporativo</span>
           <h2 className="text-4xl md:text-5xl font-display font-medium text-primary mb-6 tracking-tight">Capital Humano</h2>
-          <p className="text-carbon/70 text-lg font-sans font-light">
+          <p className="text-carbon/70 text-base sm:text-lg font-sans font-light">
             Un equipo estructurado bajo estándares de firmas globales. Integramos rigor jurídico, visión financiera y experiencia sectorial técnica.
           </p>
         </div>
 
         {/* Leadership */}
-        <div className="mb-24">
-          <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
+        <div className="mb-16 sm:mb-20">
+          <div className="grid md:grid-cols-2 gap-10 lg:gap-16 max-w-5xl mx-auto">
             {teamData.leadership.map((member, idx) => (
               <TeamProfile key={idx} member={member} tier="leadership" />
             ))}
           </div>
         </div>
 
-        <div className="w-full h-px bg-primary/10 mb-20 max-w-6xl mx-auto"></div>
+        <div className="w-full h-px bg-primary/10 mb-16 max-w-6xl mx-auto"></div>
+
+        {/* Highlighted Block: Criminal Compliance (Godofredo) */}
+        <CriminalComplianceBlock />
+
+        <div className="w-full h-px bg-primary/10 my-16 max-w-6xl mx-auto"></div>
 
         {/* Specialist Consultants */}
-        <div className="mb-24">
-           <h3 className="font-display font-medium text-3xl text-primary mb-12 text-center">Consultoría Especializada</h3>
-           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12 max-w-6xl mx-auto">
+        <div className="mb-16 sm:mb-20">
+           <h3 className="font-display font-medium text-2xl sm:text-3xl text-primary mb-10 sm:mb-12 text-center">Consultoría Especializada</h3>
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 max-w-6xl mx-auto">
              {teamData.consultants.map((member, idx) => (
                <TeamProfile key={idx} member={member} tier="consultant" />
              ))}
            </div>
         </div>
 
-        <div className="w-full max-w-lg mx-auto h-px bg-primary/10 mb-20"></div>
+        <div className="w-full max-w-lg mx-auto h-px bg-primary/10 mb-16 sm:mb-20"></div>
 
         {/* Public Procurement Area */}
-        <div className="mb-24">
-           <div className="text-center max-w-3xl mx-auto mb-16">
-             <h3 className="font-display font-medium text-4xl text-primary mb-4 tracking-tight">Área de Licitaciones y Contrataciones con el Estado</h3>
-             <p className="text-carbon/70 text-base font-sans font-light">Especialistas en contratación pública, administración de contratos de obra e infraestructura, y solución de controversias arbitrales con el Estado.</p>
+        <div className="mb-16 sm:mb-20">
+           <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+             <h3 className="font-display font-medium text-3xl sm:text-4xl text-primary mb-4 tracking-tight">Área de Licitaciones y Contrataciones con el Estado</h3>
+             <p className="text-carbon/70 text-sm sm:text-base font-sans font-light">Especialistas en contratación pública, administración de contratos de obra e infraestructura, y solución de controversias arbitrales con el Estado.</p>
            </div>
            
-           <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start max-w-6xl mx-auto">
              <div className="lg:col-span-7">
                 <TeamProfile member={teamData.publicProcurement[0]} tier="public_procurement" />
              </div>
@@ -910,12 +985,12 @@ const Team = () => {
            </div>
         </div>
 
-        <div className="w-full max-w-lg mx-auto h-px bg-primary/10 mb-20"></div>
+        <div className="w-full max-w-lg mx-auto h-px bg-primary/10 mb-16 sm:mb-20"></div>
 
         {/* Legal Team */}
         <div>
-           <h3 className="font-display font-medium text-2xl text-primary mb-12 text-center opacity-80">Soporte Legal</h3>
-           <div className="grid md:grid-cols-2 gap-10 max-w-3xl mx-auto">
+           <h3 className="font-display font-medium text-2xl text-primary mb-10 sm:mb-12 text-center opacity-80">Soporte Legal</h3>
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
               {teamData.legal.map((member, idx) => (
                 <TeamProfile key={idx} member={member} tier="legal" />
               ))}
@@ -955,6 +1030,103 @@ const Vision = () => {
   );
 };
 
+const FAQ = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  const faqData = [
+    {
+      question: "¿Qué es Warmi Kapital?",
+      answer: "Warmi Kapital es una firma boutique de consultoría legal, financiera y corporativa orientada a empresas en Perú, con especial presencia en Lima y Trujillo. Integramos una perspectiva jurídica preventiva con visión financiera estratégica, acompañando a directivos y organizaciones en sus decisiones corporativas más complejas con rigor técnico, agilidad operativa y trato cercano."
+    },
+    {
+      question: "¿Qué servicios ofrece Warmi Kapital a las empresas?",
+      answer: "Ofrecemos una propuesta integral de protección y estructuración empresarial. Nuestras especialidades incluyen arquitectura corporativa, M&A, defensa y planeamiento tributario, ingeniería financiera, asesoría en minería y energía, protección de intangibles, Obras por Impuestos (OxI), contrataciones con el Estado, así como consultoría en Derecho Penal Económico y Criminal Compliance."
+    },
+    {
+      question: "¿Cómo ayuda Warmi Kapital a prevenir riesgos legales y financieros?",
+      answer: "Trabajamos mediante un enfoque preventivo integral que identifica vulnerabilidades operativas, fiscales y corporativas antes de que se conviertan en contingencias graves. Auditamos contratos, estructuramos esquemas societarios sólidos, implementamos programas de cumplimiento normativo y diseñamos estrategias financieras que protegen el patrimonio de la empresa y de sus accionistas."
+    },
+    {
+      question: "¿Warmi Kapital asesora proyectos de Obras por Impuestos?",
+      answer: "Sí, brindamos acompañamiento técnico, financiero y legal completo en el mecanismo de Obras por Impuestos (OxI). Asesoramos a empresas privadas desde la etapa de preinversión y priorización de proyectos públicos hasta su ejecución y entrega formal, transformando el pago de impuestos en inversión de alto impacto social e institucional."
+    },
+    {
+      question: "¿Brinda asesoría en Derecho Penal Económico y Criminal Compliance?",
+      answer: "Sí, contamos con consultoría especializada en Derecho Penal Económico, delitos empresariales y Criminal Compliance. Desarrollamos e implementamos modelos de prevención de delitos ajustados a la realidad corporativa, protegiendo a la empresa, a su directorio y a sus ejecutivos frente a riesgos de responsabilidad penal y fiscal."
+    },
+    {
+      question: "¿Dónde atiende Warmi Kapital?",
+      answer: "Warmi Kapital atiende a empresas a nivel nacional en Perú, con sedes corporativas en Trujillo (Calle Cavero y Muñoz #735, Las Quintanas y Los Cipreses 468, Víctor Larco) y en Lima (Av. Emilio Cavenecia #151, Piso 7, Miraflores). Realizamos atenciones presenciales y sesiones ejecutivas virtuales para clientes de todo el país."
+    },
+    {
+      question: "¿Cómo puedo solicitar una consulta con la firma?",
+      answer: "Puede solicitar una sesión ejecutiva confidencial enviando sus datos a través de nuestro formulario de contacto en la web, escribiendo al correo electrónico contacto@warmikapital.com.pe o comunicándose vía WhatsApp al número +51 932 340 282. Nuestro equipo analizará su requerimiento para agendar un diagnóstico inicial."
+    }
+  ];
+
+  return (
+    <section id="faq" aria-labelledby="faq-heading" className="py-24 sm:py-32 bg-white relative overflow-hidden border-t border-primary/5">
+      <div className="container mx-auto px-6 max-w-4xl">
+        <div className="text-center mb-16">
+          <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-4 block">
+            Claridad &amp; Respuestas
+          </span>
+          <h2 id="faq-heading" className="text-3xl md:text-5xl font-display font-medium text-primary tracking-tight">
+            Preguntas frecuentes
+          </h2>
+          <p className="text-carbon/70 text-base sm:text-lg font-sans font-light mt-4 max-w-2xl mx-auto">
+            Información clave sobre nuestro modelo de consultoría, áreas de especialización y formas de atención estratégica.
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          {faqData.map((item, idx) => {
+            const isOpen = openIndex === idx;
+            return (
+              <div 
+                key={idx}
+                className="border border-primary/10 rounded-sm bg-bg-sand/50 overflow-hidden transition-all duration-300 hover:border-secondary/30"
+              >
+                <button
+                  type="button"
+                  id={`faq-q-${idx}`}
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-a-${idx}`}
+                  onClick={() => setOpenIndex(isOpen ? null : idx)}
+                  className="w-full text-left p-6 flex justify-between items-center gap-4 text-primary font-display font-medium text-lg md:text-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 transition-colors cursor-pointer"
+                >
+                  <span>{item.question}</span>
+                  <ChevronDown 
+                    size={20} 
+                    className={`text-secondary shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      id={`faq-a-${idx}`}
+                      role="region"
+                      aria-labelledby={`faq-q-${idx}`}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                    >
+                      <div className="px-6 pb-6 pt-1 text-carbon/80 font-sans font-light text-base leading-relaxed border-t border-primary/5">
+                        {item.answer}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Contact = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
 
@@ -964,13 +1136,13 @@ const Contact = () => {
   };
 
   return (
-    <section id="contacto" className="py-24 bg-bg-sand">
+    <section id="contacto" aria-labelledby="contact-heading" className="py-24 bg-bg-sand">
       <div className="container mx-auto px-6">
         <div className="bg-primary rounded-sm shadow-2xl overflow-hidden">
           <div className="grid lg:grid-cols-2">
              <div className="p-12 md:p-20 text-white flex flex-col justify-center">
               <span className="text-secondary font-sans font-semibold text-xs uppercase tracking-[0.2em] mb-6 block">Diagnóstico Inicial</span>
-              <h2 className="text-4xl md:text-5xl font-display font-medium mb-8 tracking-tight leading-[1.1] !text-white">
+              <h2 id="contact-heading" className="text-4xl md:text-5xl font-display font-medium mb-8 tracking-tight leading-[1.1] !text-white">
                 Hablemos de tu siguiente <span className="!text-secondary italic">decisión crítica.</span>
               </h2>
               <p className="text-white/60 text-lg mb-16 font-light leading-relaxed max-w-md">
@@ -983,7 +1155,7 @@ const Contact = () => {
                     <MapPin size={24} className="text-white" />
                   </div>
                   <div className="space-y-4">
-                    <h5 className="font-display font-bold text-secondary mb-1 uppercase tracking-widest text-xs">Ubícanos en</h5>
+                    <h3 className="font-display font-bold text-secondary mb-1 uppercase tracking-widest text-xs">Ubícanos en</h3>
                     <div className="text-white/90 space-y-2 text-sm">
                        <p><span className="font-bold text-secondary">Trujillo:</span> Calle Cavero y Muñoz #735, Las Quintanas</p>
                        <p><span className="font-bold text-secondary">Trujillo:</span> Los Cipreses 468, Víctor Larco Herrera 13009</p>
@@ -997,7 +1169,7 @@ const Contact = () => {
                     <Phone size={24} className="text-white" />
                   </div>
                   <div>
-                    <h5 className="font-display font-bold text-secondary mb-1 uppercase tracking-widest text-xs">Teléfono</h5>
+                    <h3 className="font-display font-bold text-secondary mb-1 uppercase tracking-widest text-xs">Teléfono</h3>
                     <p className="text-white/90">+51 932 340 282</p>
                   </div>
                 </div>
@@ -1007,7 +1179,7 @@ const Contact = () => {
                     <Mail size={24} className="text-white" />
                   </div>
                   <div>
-                    <h5 className="font-display font-bold text-secondary mb-1 uppercase tracking-widest text-xs">Email</h5>
+                    <h3 className="font-display font-bold text-secondary mb-1 uppercase tracking-widest text-xs">Email</h3>
                     <p className="text-white/90">contacto@warmikapital.com.pe</p>
                   </div>
                 </div>
@@ -1065,16 +1237,17 @@ const Footer = () => {
           </div>
 
           <div className="col-span-1">
-            <h5 className="font-display font-bold !text-secondary mb-8 uppercase tracking-widest text-xs">Empresa</h5>
+            <h3 className="font-display font-bold !text-secondary mb-8 uppercase tracking-widest text-xs">Empresa</h3>
             <div className="flex flex-col gap-4 text-white/60">
               <a href="#nosotros" className="hover:text-white transition-colors">Nosotros</a>
               <a href="#servicios" className="hover:text-white transition-colors">Servicios</a>
               <a href="#equipo" className="hover:text-white transition-colors">Equipo</a>
+              <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
             </div>
           </div>
 
           <div className="col-span-1">
-            <h5 className="font-display font-bold !text-secondary mb-8 uppercase tracking-widest text-xs">Especialidades</h5>
+            <h3 className="font-display font-bold !text-secondary mb-8 uppercase tracking-widest text-xs">Especialidades</h3>
             <div className="flex flex-col gap-4 text-white/60">
               <a href="#servicios" className="hover:text-white transition-colors">Derecho Financiero</a>
               <a href="#servicios" className="hover:text-white transition-colors">Derecho Tributario</a>
@@ -1101,15 +1274,18 @@ export default function App() {
   return (
     <div className="min-h-screen bg-bg-sand">
       <Navbar />
-      <Hero />
-      <About />
-      <VulnerabilitySection />
-      <Services />
-      <Differentiator />
-      <Team />
-      <ElegantDivider />
-      <Vision />
-      <Contact />
+      <main>
+        <Hero />
+        <About />
+        <VulnerabilitySection />
+        <Services />
+        <Differentiator />
+        <Team />
+        <ElegantDivider />
+        <Vision />
+        <FAQ />
+        <Contact />
+      </main>
       <WhatsAppFloatingButton />
       <Footer />
     </div>
