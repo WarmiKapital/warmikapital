@@ -688,6 +688,8 @@ type TeamMemberData = {
   role: string;
   bio: string;
   image?: string;
+  imageAlt?: string;
+  imagePosition?: string;
   initials?: string;
   credentials?: string;
 };
@@ -700,8 +702,8 @@ const TeamProfile = ({ member, tier }: { member: TeamMemberData, tier: 'leadersh
       return (
         <img 
           src={member.image} 
-          alt={member.name} 
-          className="w-full h-full object-cover object-top grayscale mix-blend-multiply opacity-90 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-700 ease-out origin-top" 
+          alt={member.imageAlt || member.name} 
+          className={`w-full h-full object-cover ${member.imagePosition || 'object-top'} grayscale mix-blend-multiply opacity-90 group-hover:grayscale-0 group-hover:mix-blend-normal group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-700 ease-out origin-top`} 
           loading="lazy" 
           referrerPolicy="no-referrer" 
         />
@@ -935,6 +937,13 @@ const Team = () => {
         role: "Consultora en gestión operativa, logística y seguridad ocupacional",
         bio: "Ingeniera Industrial colegiada y habilitada, con formación en sistemas integrados de gestión, logística, compras y seguridad ocupacional. Aporta experiencia en procesos operativos, mejora continua y gestión de riesgos laborales, con enfoque en orden, control y eficiencia para proyectos empresariales e industriales.",
         image: "https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1779301825/Neymi_zs2tyc.png"
+      },
+      {
+        name: "Dra. Giovanna Ramos",
+        role: "CONTADORA PÚBLICA COLEGIADA Y ABOGADA",
+        bio: "Contadora pública colegiada y abogada, maestra en Gestión Pública y Desarrollo Local. Cuenta con experiencia en planeamiento y presupuesto, control gubernamental, tesorería, gestión administrativa y cumplimiento normativo, tanto en entidades públicas como en el sector privado.",
+        image: "https://res.cloudinary.com/dpo7kthwf/image/upload/v1788399653/DSC00276_liyca9.jpg",
+        imageAlt: "Dra. Giovanna Ramos, contadora pública colegiada y abogada de Warmi Kapital."
       }
     ],
     publicProcurement: [
@@ -967,6 +976,13 @@ const Team = () => {
         role: "Equipo Legal",
         bio: "Bachiller egresada de la Facultad de Derecho de la UPAO y perteneciente al tercio superior. Acompaña procesos de soporte jurídico y gestión documental dentro del equipo.",
         image: "https://res.cloudinary.com/dpo7kthwf/image/upload/q_auto/f_auto/v1778870944/Stefany_zno2ce.jpg"
+      },
+      {
+        name: "Brisa Becerra Pérez",
+        role: "PRACTICANTE PREPROFESIONAL",
+        bio: "Inicia sus prácticas preprofesionales en Warmi Kapital, participando en actividades de apoyo y fortaleciendo su formación dentro de un entorno corporativo multidisciplinario.",
+        image: "https://res.cloudinary.com/dpo7kthwf/image/upload/v1788399695/DSC00434_o9fova.jpg",
+        imageAlt: "Brisa Becerra Pérez, practicante preprofesional de Warmi Kapital."
       }
     ]
   };
@@ -1001,7 +1017,7 @@ const Team = () => {
         {/* Specialist Consultants */}
         <div className="mb-16 sm:mb-20">
            <h3 className="font-display font-medium text-2xl sm:text-3xl text-primary mb-10 sm:mb-12 text-center">Consultoría Especializada</h3>
-           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 max-w-6xl mx-auto">
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-7xl mx-auto">
              {teamData.consultants.map((member, idx) => (
                <TeamProfile key={idx} member={member} tier="consultant" />
              ))}
@@ -1029,7 +1045,7 @@ const Team = () => {
         {/* Legal Team */}
         <div>
            <h3 className="font-display font-medium text-2xl text-primary mb-10 sm:mb-12 text-center opacity-80">Soporte Legal</h3>
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
               {teamData.legal.map((member, idx) => (
                 <TeamProfile key={idx} member={member} tier="legal" />
               ))}
